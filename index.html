@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>百人一首 暗記クイズ | 無料で学べる和歌学習アプリ</title>
+<meta name="description" content="百人一首を楽しく暗記できる無料クイズアプリ。上の句から下の句を答える形式で、音声読み上げ機能付き。初心者から上級者まで、自分のペースで学習できます。">
+<meta name="keywords" content="百人一首,暗記,クイズ,和歌,学習,無料,かるた,古典,日本文学">
+<meta name="author" content="百人一首学習アプリ">
+
+<!-- OGP (Open Graph Protocol) -->
+<meta property="og:title" content="百人一首 暗記クイズ | 無料で学べる和歌学習アプリ">
+<meta property="og:description" content="百人一首を楽しく暗記できる無料クイズアプリ。上の句から下の句を答える形式で、音声読み上げ機能付き。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="百人一首 暗記クイズ | 無料で学べる和歌学習アプリ">
+<meta name="twitter:description" content="百人一首を楽しく暗記できる無料クイズアプリ。上の句から下の句を答える形式で、音声読み上げ機能付き。">
+
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Shippori+Mincho:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Google AdSense - 審査通過後にコメントアウトを解除 -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+
+<body>
+<!-- 桜の花びらアニメーション -->
+<div id="sakura-container"></div>
+
+<div id="title-screen" class="screen">
+  <div class="title-content">
+    <h1 class="main-title">
+      <span class="title-char">百</span>
+      <span class="title-char">人</span>
+      <span class="title-char">一</span>
+      <span class="title-char">首</span>
+    </h1>
+    <p class="subtitle">〜 平安の歌 暗記之道 〜</p>
+    
+    <div class="menu-buttons">
+      <button class="btn-start" onclick="startGame()">
+        <span class="btn-icon">⚔️</span>
+        <span>修行を始める</span>
+      </button>
+      <button class="btn-list" onclick="showList()">
+        <span class="btn-icon">📜</span>
+        <span>歌の一覧</span>
+      </button>
+      <button class="btn-settings" onclick="showSettings()">
+        <span class="btn-icon">⚙️</span>
+        <span>設定</span>
+      </button>
+    </div>
+    
+    <div class="high-score">
+      <p>最高記録：<span id="high-score-display">0</span>問連続正解</p>
+    </div>
+  </div>
+</div>
+
+<div id="quiz-screen" class="screen hidden">
+  <div class="quiz-header">
+    <div class="stats-container">
+      <div class="stat-box">
+        <span class="stat-label">正解率</span>
+        <span id="correct-count" class="stat-value">0%</span>
+      </div>
+      <div class="stat-box combo-box">
+        <span class="stat-label">連続正解</span>
+        <span id="combo-count" class="stat-value">0</span>
+        <span id="combo-flame" class="combo-flame">🔥</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">進捗</span>
+        <span id="progress-count" class="stat-value">0/0</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="question-container">
+    <div class="card-container">
+      <div class="waka-card">
+        <div class="card-ornament top-left"></div>
+        <div class="card-ornament top-right"></div>
+        <div class="card-ornament bottom-left"></div>
+        <div class="card-ornament bottom-right"></div>
+        
+        <p class="card-number" id="card-number"></p>
+        <p id="kami" class="kami-text"></p>
+        <button class="speak-btn" onclick="speakKami()">
+          <span class="speak-icon">🔊</span>
+          読み上げ
+        </button>
+      </div>
+    </div>
+
+    <div id="choices" class="choices-container"></div>
+  </div>
+  
+  <button class="quit-btn" onclick="quitGame()">修行を中断</button>
+</div>
+
+<div id="list-screen" class="screen hidden">
+  <div class="list-content">
+    <h2 class="section-title">📜 百首一覧</h2>
+    <p class="list-instruction">出題する歌を選択してください</p>
+    
+    <div class="list-actions">
+      <button class="btn-secondary" onclick="selectAll()">全て選択</button>
+      <button class="btn-secondary" onclick="deselectAll()">全て解除</button>
+      <span class="selected-count">選択中：<span id="selected-count">0</span>首</span>
+    </div>
+    
+    <div id="list-container" class="list-container"></div>
+    
+    <button class="btn-back" onclick="backToTitle()">戻る</button>
+  </div>
+</div>
+
+<div id="settings-screen" class="screen hidden">
+  <div class="settings-content">
+    <h2 class="section-title">⚙️ 設定</h2>
+    
+    <div class="setting-item">
+      <label>
+        <input type="checkbox" id="sound-enabled" checked>
+        効果音を鳴らす
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label>
+        <input type="checkbox" id="animation-enabled" checked>
+        アニメーションを表示
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label>
+        <input type="checkbox" id="auto-speak-enabled" checked>
+        上の句を自動で読み上げる
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label>
+        選択肢の数：
+        <select id="choice-count">
+          <option value="3">3択</option>
+          <option value="4">4択</option>
+          <option value="5">5択</option>
+        </select>
+      </label>
+    </div>
+    
+    <button class="btn-back" onclick="backToTitle()">戻る</button>
+  </div>
+</div>
+
+<div id="result-screen" class="screen hidden">
+  <div class="result-content">
+    <h2 class="result-title">修行の成果</h2>
+    
+    <div class="result-card">
+      <div class="result-rank" id="result-rank"></div>
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="result-label">正解</span>
+          <span class="result-number correct" id="result-correct">0</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">不正解</span>
+          <span class="result-number wrong" id="result-wrong">0</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">正解率</span>
+          <span class="result-number rate" id="result-rate">0%</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">最高連続</span>
+          <span class="result-number combo" id="result-combo">0</span>
+        </div>
+      </div>
+      
+      <p class="result-message" id="result-message"></p>
+    </div>
+    
+    <div class="result-buttons">
+      <button class="btn-retry" onclick="startGame()">もう一度</button>
+      <button class="btn-back" onclick="backToTitle()">タイトルへ</button>
+    </div>
+  </div>
+</div>
+
+<!-- 正解/不正解のフィードバック表示 -->
+<div id="feedback" class="feedback hidden"></div>
+
+<!-- 注釈 -->
+<div class="disclaimer">
+  ※ 本サイトの内容の正確性は保証されません。学習の補助としてご利用ください。
+  <br>
+  <a href="privacy.html" style="color: #8b4513; text-decoration: underline;">プライバシーポリシー</a> | 
+  <a href="contact.html" style="color: #8b4513; text-decoration: underline;">お問い合わせ</a>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
