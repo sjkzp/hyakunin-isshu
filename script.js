@@ -464,7 +464,7 @@ function backToTitle() {
 }
 
 function quitGame() {
-  if (confirm('修行を中断しますか？')) {
+  if (confirm('挑戦を中断しますか？')) {
     showResult();
   }
 }
@@ -499,7 +499,7 @@ function showResult() {
     message = 'よくできました！更なる高みを目指しましょう。';
   } else if (rate >= 50) {
     rank = '🥉 初級';
-    message = 'いい調子です。繰り返し修行を積みましょう。';
+    message = 'いい調子です。繰り返し挑戦を積みましょう。';
   } else {
     rank = '📝 見習';
     message = 'これからです。一首一首、心を込めて。';
