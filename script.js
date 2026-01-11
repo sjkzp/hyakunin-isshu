@@ -729,8 +729,17 @@ function speakShimo(shimoText) {
     .replace(/ゑ/g, 'え')
     // 特定の単語の変換（より具体的なパターンから順に）
     .replace(/かよひじ/g, 'かよいじ')
-    // 「はし」を保護（橋・端など）
+    // 「はな」「はし」「はる」など、変換してはいけない「は」を保護
+    .replace(/はな/g, '__HANA__')
     .replace(/はし/g, '__HASHI__')
+    .replace(/はる/g, '__HARU__')
+    .replace(/はや/g, '__HAYA__')
+    .replace(/はて/g, '__HATE__')
+    .replace(/はら/g, '__HARA__')
+    .replace(/はじ/g, '__HAJI__')
+    .replace(/はま/g, '__HAMA__')
+    .replace(/はか/g, '__HAKA__')
+    .replace(/はこ/g, '__HAKO__')
     // 「こひ」→「こい」
     .replace(/こひ/g, 'こい')
     // 「あひ」「あふ」「あは」系
@@ -745,8 +754,17 @@ function speakShimo(shimoText) {
     // 「いひ」「いふ」系
     .replace(/いひ/g, 'いい')
     .replace(/いふ/g, 'いう')
-    // 保護した「はし」を復元
+    // 保護した「は」を復元
+    .replace(/__HANA__/g, 'はな')
     .replace(/__HASHI__/g, 'はし')
+    .replace(/__HARU__/g, 'はる')
+    .replace(/__HAYA__/g, 'はや')
+    .replace(/__HATE__/g, 'はて')
+    .replace(/__HARA__/g, 'はら')
+    .replace(/__HAJI__/g, 'はじ')
+    .replace(/__HAMA__/g, 'はま')
+    .replace(/__HAKA__/g, 'はか')
+    .replace(/__HAKO__/g, 'はこ')
     // 「ひ」が助詞の場合（より一般的なルール）
     .replace(/([^ぁ-ん])ひ /g, '$1い ')
     .replace(/([^ぁ-ん])ひ([^ぁ-ん])/g, '$1い$2')
