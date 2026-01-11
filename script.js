@@ -278,7 +278,7 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     // 選択したボタンを正解色に
     selectedButton.classList.add('selected-correct');
     
-    showFeedback('⭕ 正解！', 'correct');
+    showFeedback('⭕ 正解', 'correct');
     if (soundEnabled) playSound('correct');
     
     // コンボが3以上の時は炎エフェクト
