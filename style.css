@@ -1009,6 +1009,7 @@ body {
     font-size: 1rem;  /* さらに小さく */
   }
   
+  /* 結果画面 */
   .result-stats {
     grid-template-columns: 1fr 1fr;  /* 2列維持 */
     gap: 10px;  /* 間隔を狭く */
@@ -1058,6 +1059,113 @@ body {
     padding: 12px 30px;  /* ボタンを小さく */
     font-size: 1rem;
     width: 100%;  /* 幅いっぱいに */
+  }
+  
+  /* 一覧画面 */
+  .section-title {
+    font-size: 1.8rem;  /* タイトルを小さく */
+    margin-bottom: 15px;
+  }
+  
+  .list-instruction {
+    font-size: 0.95rem;  /* 説明文を小さく */
+    margin-bottom: 15px;
+  }
+  
+  .list-actions {
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .btn-secondary {
+    padding: 8px 15px;  /* ボタンを小さく */
+    font-size: 0.9rem;
+  }
+  
+  .selected-count {
+    font-size: 0.95rem;  /* カウントを小さく */
+  }
+  
+  .list-container {
+    max-height: 400px;  /* 高さを抑える */
+    padding: 10px;  /* パディング削減 */
+    margin-bottom: 15px;
+  }
+  
+  .category-header {
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+  
+  .category-title {
+    padding: 10px;  /* パディング削減 */
+    gap: 8px;
+    flex-wrap: wrap;  /* 必要に応じて折り返し */
+  }
+  
+  .category-name {
+    font-size: 0.95rem;  /* カテゴリ名を小さく */
+    width: 100%;  /* 独立した行に */
+    margin-bottom: 5px;
+  }
+  
+  .category-select-btn,
+  .category-deselect-btn {
+    padding: 6px 12px;  /* ボタンを小さく */
+    font-size: 0.8rem;
+  }
+  
+  .category-content {
+    margin-bottom: 10px;
+    padding-left: 8px;
+  }
+  
+  .list-item {
+    padding: 10px;  /* パディング削減 */
+    margin-bottom: 6px;
+    border-left-width: 3px;
+  }
+  
+  .list-item label {
+    font-size: 0.9rem;  /* フォントを小さく */
+  }
+  
+  .list-item input[type="checkbox"] {
+    width: 16px;  /* チェックボックスを小さく */
+    height: 16px;
+    margin-right: 8px;
+  }
+  
+  .list-number {
+    font-size: 0.85rem;  /* 番号を小さく */
+    min-width: 30px;
+    margin-right: 6px;
+  }
+  
+  .list-text {
+    font-size: 0.9rem;  /* テキストを小さく */
+    line-height: 1.5;
+  }
+  
+  /* 設定画面 */
+  .setting-item {
+    padding: 15px;  /* パディング削減 */
+    margin-bottom: 10px;
+  }
+  
+  .setting-item label {
+    font-size: 1rem;  /* フォントを小さく */
+  }
+  
+  .setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+  }
+  
+  .setting-item select {
+    padding: 6px 12px;
+    font-size: 0.9rem;
   }
   
   #question-container {
