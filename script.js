@@ -565,7 +565,7 @@ function showResult() {
     message = 'よくできました！更なる高みを目指しましょう。';
   } else if (rate >= 50) {
     rank = '🥉 初級';
-    message = 'いい調子です。繰り返し挑戦を積みましょう。';
+    message = 'いい調子です。繰り返し挑戦しましょう。';
   } else {
     rank = '📝 見習';
     message = 'これからです。一首一首、心を込めて。';
@@ -580,7 +580,7 @@ function showResult() {
   
   // 最高記録を更新した場合
   if (maxCombo > 0 && maxCombo === highScore) {
-    document.getElementById('result-message').textContent += '\n\n🎉 最高記録を更新しました！';
+    document.getElementById('result-message').textContent += '\n\n🎉 最高記録を更新！';
   }
 }
 
