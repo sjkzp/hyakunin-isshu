@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sjkzp.github.io/hyakunin-isshu/sitemap.xml
+Sitemap: https://hyakunin-isshu.xyz/sitemap.xml
