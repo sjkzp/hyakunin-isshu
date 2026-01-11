@@ -466,7 +466,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 800;
   z-index: 1000;
   animation: feedbackPop 0.8s ease-out;
@@ -990,6 +990,34 @@ body {
     padding: 12px 15px;
   }
   
+  /* スマホではhover効果を無効化 */
+  .choices-container button:hover:not(:disabled) {
+    transform: none;
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    border-color: #8b4513;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* タップ時のactive効果は維持 */
+  .choices-container button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  
+  /* 各種ボタンのhover効果も無効化 */
+  .speak-btn:hover,
+  .hint-btn:hover,
+  .detail-btn:hover,
+  .btn-secondary:hover,
+  .category-select-btn:hover,
+  .category-deselect-btn:hover,
+  .btn-retry:hover,
+  .btn-back:hover,
+  .quit-btn:hover,
+  .footer-link:hover {
+    transform: none;
+    box-shadow: inherit;
+  }
+  
   .stats-container {
     flex-direction: row;  /* 横並びを維持 */
     gap: 8px;
@@ -1133,6 +1161,13 @@ body {
     margin-bottom: 6px;
     border-left: none;  /* 左ボーダー削除してスッキリ */
     border: 1px solid #daa520;  /* 全体を囲む細いボーダー */
+  }
+  
+  /* スマホではhover効果を無効化 */
+  .list-item:hover {
+    background: white;
+    border-left-color: #daa520;
+    transform: none;
   }
   
   .list-item label {
