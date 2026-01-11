@@ -1012,7 +1012,7 @@ body {
   /* 結果画面 */
   .result-stats {
     grid-template-columns: 1fr 1fr;  /* 2列維持 */
-    gap: 10px;  /* 間隔を狭く */
+    gap: 8px;  /* 間隔をさらに狭く */
     margin-bottom: 20px;  /* マージン削減 */
   }
   
@@ -1032,16 +1032,19 @@ body {
   }
   
   .result-stat {
-    padding: 12px;  /* パディング削減 */
+    padding: 10px 8px;  /* 横のパディングも削減 */
   }
   
   .result-label {
-    font-size: 0.85rem;  /* ラベルを小さく */
+    font-size: 0.8rem;  /* さらに小さく */
     margin-bottom: 5px;
+    display: inline-block;  /* 改行を防ぐ */
+    white-space: nowrap;  /* 改行させない */
   }
   
   .result-number {
-    font-size: 1.8rem;  /* 数字を小さく */
+    font-size: 1.6rem;  /* 数字をさらに小さく */
+    display: block;
   }
   
   .result-message {
@@ -1225,17 +1228,33 @@ body {
     padding: 0 15px;
   }
   
+  /* スマホでは注意書きを短縮 */
+  .footer-note::before {
+    content: "※ 学習補助としてご利用ください";
+  }
+  
+  .footer-note {
+    font-size: 0;  /* 元のテキストを非表示 */
+  }
+  
+  .footer-note::before {
+    font-size: 0.7rem;  /* 短縮版のみ表示 */
+  }
+  
   .footer-links {
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;  /* 横並びに戻す */
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .footer-link {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   .footer-separator {
-    display: none;  /* セパレーターを非表示 */
+    display: inline;  /* セパレーターを表示 */
+    font-size: 0.75rem;
   }
 }
 
