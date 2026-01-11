@@ -1093,58 +1093,68 @@ body {
   }
   
   .category-header {
-    margin-top: 15px;
+    margin-top: 10px;  /* さらに削減 */
     margin-bottom: 8px;
   }
   
+  .category-header:first-child {
+    margin-top: 0;
+  }
+  
   .category-title {
-    padding: 10px;  /* パディング削減 */
-    gap: 8px;
+    padding: 8px;  /* さらにコンパクトに */
+    gap: 6px;
     flex-wrap: wrap;  /* 必要に応じて折り返し */
   }
   
   .category-name {
-    font-size: 0.95rem;  /* カテゴリ名を小さく */
+    font-size: 0.9rem;  /* さらに小さく */
     width: 100%;  /* 独立した行に */
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
   
   .category-select-btn,
   .category-deselect-btn {
-    padding: 6px 12px;  /* ボタンを小さく */
-    font-size: 0.8rem;
+    padding: 5px 10px;  /* さらに小さく */
+    font-size: 0.75rem;
   }
   
   .category-content {
     margin-bottom: 10px;
-    padding-left: 8px;
+    padding-left: 0;  /* パディング削除 */
+    border-left: none;  /* 左ボーダー削除 */
   }
   
   .list-item {
     padding: 10px;  /* パディング削減 */
     margin-bottom: 6px;
-    border-left-width: 3px;
+    border-left: none;  /* 左ボーダー削除してスッキリ */
+    border: 1px solid #daa520;  /* 全体を囲む細いボーダー */
   }
   
   .list-item label {
     font-size: 0.9rem;  /* フォントを小さく */
   }
   
+  .list-label {
+    gap: 5px;  /* 要素間の間隔を狭く */
+  }
+  
   .list-item input[type="checkbox"] {
     width: 16px;  /* チェックボックスを小さく */
     height: 16px;
-    margin-right: 8px;
-  }
-  
-  .list-number {
-    font-size: 0.85rem;  /* 番号を小さく */
-    min-width: 30px;
     margin-right: 6px;
   }
   
+  .list-number {
+    font-size: 0.8rem;  /* 番号をさらに小さく */
+    min-width: 28px;
+    margin-right: 5px;
+  }
+  
   .list-text {
-    font-size: 0.9rem;  /* テキストを小さく */
-    line-height: 1.5;
+    font-size: 0.85rem;  /* テキストをさらに小さく */
+    line-height: 1.4;
   }
   
   /* 設定画面 */
@@ -1178,7 +1188,7 @@ body {
   }
   
   .quit-btn {
-    bottom: 80px;  /* disclaimerと被らないように */
+    bottom: 20px;  /* 通常の位置に戻す */
     right: 15px;
     padding: 10px 20px;
     font-size: 0.9rem;
@@ -1187,11 +1197,11 @@ body {
   .hint-btn {
     font-size: 0.9rem;
     padding: 8px 20px;
-    margin: 15px auto;
+    margin: 15px auto 20px;  /* 下マージンを通常に戻す */
   }
   
   .hint-container {
-    margin: 15px;
+    margin: 15px 15px 20px;  /* 下マージンを通常に戻す */
     padding: 12px 15px;
   }
   
@@ -1201,31 +1211,71 @@ body {
   }
   
   .detail-btn {
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    padding: 5px 10px;  /* さらに小さく */
+    font-size: 0.75rem;
   }
   
-  .disclaimer {
-    font-size: 0.65rem;
-    padding: 4px 8px;
-    max-width: 60%;  /* スマホで右側のボタンスペースを確保 */
+  /* タイトル画面のフッター */
+  .title-footer {
+    margin-top: 30px;
+  }
+  
+  .footer-note {
+    font-size: 0.7rem;
+    padding: 0 15px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .footer-link {
+    font-size: 0.8rem;
+  }
+  
+  .footer-separator {
+    display: none;  /* セパレーターを非表示 */
   }
 }
 
-/* 注釈 */
-.disclaimer {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  font-size: 0.7rem;
+/* タイトル画面のフッター */
+.title-footer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-note {
+  font-size: 0.8rem;
   color: #8b4513;
-  opacity: 0.6;
-  background: rgba(255, 249, 230, 0.8);
-  padding: 5px 10px;
-  border-radius: 5px;
-  z-index: 100;  /* quit-btnより低く */
-  max-width: calc(100% - 20px);  /* スマホ対応 */
-  line-height: 1.4;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-link {
+  color: #8b4513;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #daa520;
+  text-decoration: underline;
+}
+
+.footer-separator {
+  color: #8b4513;
+  opacity: 0.5;
 }
 
 /* ヒント表示ボタン */
