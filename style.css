@@ -1265,12 +1265,15 @@ body {
   
   /* スマホでは元のテキストを非表示にして短縮版のみ表示 */
   .footer-note {
-    font-size: 0;  /* 元のテキストを非表示 */
+    visibility: hidden;  /* 元のテキストを完全に非表示 */
+    position: relative;
+    height: auto;
   }
   
   .footer-note::before {
     content: "※ 学習補助としてご利用ください";
-    font-size: 0.7rem;  /* 短縮版のみ表示 */
+    visibility: visible;  /* ::beforeのみ表示 */
+    font-size: 0.7rem;
     display: block;
   }
   
