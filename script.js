@@ -731,6 +731,8 @@ function speakShimo(shimoText) {
     .replace(/かよひじ/g, 'かよいじ')
     // 「はし」を保護（橋・端など）
     .replace(/はし/g, '__HASHI__')
+    // 「こひ」→「こい」
+    .replace(/こひ/g, 'こい')
     // 「あひ」「あふ」「あは」系
     .replace(/あひ/g, 'あい')
     .replace(/あふ/g, 'あう')
