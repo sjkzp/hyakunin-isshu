@@ -925,12 +925,69 @@ body {
   }
   
   .kami-text {
-    font-size: 1.3rem;
+    font-size: 1.2rem;  /* さらに小さく */
+    line-height: 1.8;  /* 行間を狭く */
+    margin: 10px 0;  /* マージンを削減 */
+    letter-spacing: 1px;
+  }
+  
+  .kami-text rt {
+    font-size: 0.45em;  /* ルビも小さく */
+  }
+  
+  .card-number {
+    font-size: 0.9rem;  /* 番号も小さく */
+    top: 10px;
+    right: 15px;
+  }
+  
+  .card-ornament {
+    width: 20px;  /* 装飾も小さく */
+    height: 20px;
+    border-width: 2px;
+  }
+  
+  .card-ornament.top-left,
+  .card-ornament.top-right {
+    top: 8px;
+  }
+  
+  .card-ornament.bottom-left,
+  .card-ornament.bottom-right {
+    bottom: 8px;
+  }
+  
+  .card-ornament.top-left,
+  .card-ornament.bottom-left {
+    left: 8px;
+  }
+  
+  .card-ornament.top-right,
+  .card-ornament.bottom-right {
+    right: 8px;
+  }
+  
+  .speak-btn {
+    padding: 8px 20px;  /* ボタンも小さく */
+    font-size: 0.85rem;
+    margin: 10px auto 0;  /* マージン削減 */
+  }
+  
+  .speak-icon {
+    font-size: 1rem;
+  }
+  
+  .card-container {
+    margin-bottom: 20px;  /* カードの下マージン削減 */
+  }
+  
+  .choices-container {
+    gap: 10px;  /* 選択肢の間隔も狭く */
   }
   
   .choices-container button {
-    font-size: 1.1rem;
-    padding: 15px 20px;
+    font-size: 1rem;  /* 選択肢も少し小さく */
+    padding: 12px 15px;
   }
   
   .stats-container {
@@ -953,15 +1010,63 @@ body {
   }
   
   .result-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;  /* 2列維持 */
+    gap: 10px;  /* 間隔を狭く */
+    margin-bottom: 20px;  /* マージン削減 */
+  }
+  
+  .result-title {
+    font-size: 1.8rem;  /* タイトルを小さく */
+    margin-bottom: 20px;
+  }
+  
+  .result-card {
+    padding: 20px 15px;  /* パディング削減 */
+    margin-bottom: 20px;
+  }
+  
+  .result-rank {
+    font-size: 2rem;  /* ランクを小さく */
+    margin-bottom: 20px;
+  }
+  
+  .result-stat {
+    padding: 12px;  /* パディング削減 */
+  }
+  
+  .result-label {
+    font-size: 0.85rem;  /* ラベルを小さく */
+    margin-bottom: 5px;
+  }
+  
+  .result-number {
+    font-size: 1.8rem;  /* 数字を小さく */
+  }
+  
+  .result-message {
+    font-size: 1rem;  /* メッセージを小さく */
+    line-height: 1.6;
+  }
+  
+  .result-buttons {
+    flex-direction: column;  /* 縦並びに */
+    gap: 10px;
+  }
+  
+  .btn-retry,
+  .btn-back {
+    padding: 12px 30px;  /* ボタンを小さく */
+    font-size: 1rem;
+    width: 100%;  /* 幅いっぱいに */
   }
   
   #question-container {
-    padding-top: 90px;  /* コンパクトなヘッダーに合わせて */
+    padding-top: 75px;  /* さらに削減 */
   }
   
   .waka-card {
-    padding: 25px;  /* スマホ用にパディング調整 */
+    padding: 15px 20px;  /* パディングをさらに削減 */
+    border-width: 3px;  /* ボーダーも細く */
   }
   
   .quit-btn {
@@ -972,17 +1077,19 @@ body {
   }
   
   .hint-btn {
-    font-size: 0.95rem;
-    padding: 10px 25px;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    margin: 15px auto;
   }
   
   .hint-container {
     margin: 15px;
-    padding: 15px 20px;
+    padding: 12px 15px;
   }
   
   .hint-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
   
   .detail-btn {
