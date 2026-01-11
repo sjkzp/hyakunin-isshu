@@ -329,6 +329,7 @@ body {
   font-size: 1.2rem;
   color: #8b4513;
   font-weight: 700;
+  display: none;  /* 非表示 */
 }
 
 .kami-text {
@@ -937,9 +938,7 @@ body {
   }
   
   .card-number {
-    font-size: 0.9rem;  /* 番号も小さく */
-    top: 10px;
-    right: 15px;
+    display: none;  /* 非表示 */
   }
   
   .card-ornament {
