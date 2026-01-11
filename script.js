@@ -745,6 +745,8 @@ function speakShimo(shimoText) {
     .replace(/はこ/g, '__HAKO__')
     // 「こひ」→「こい」
     .replace(/こひ/g, 'こい')
+    // 「かひ」→「かい」
+    .replace(/かひ/g, 'かい')
     // 「あひ」「あふ」「あは」系
     .replace(/あひ/g, 'あい')
     .replace(/あふ/g, 'あう')
