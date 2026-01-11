@@ -1,4 +1,5 @@
-let selected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+// localStorageから選択された歌を読み込む、なければ1-20首をデフォルト
+let selected = JSON.parse(localStorage.getItem('hyakunin-selected') || '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]');
 let currentQuiz = [];
 let index = 0;
 
@@ -20,6 +21,7 @@ window.addEventListener('load', () => {
   updateHighScore();
   createSakura();
   loadSettings();
+  loadSelectedSongs();  // 選択された歌を読み込む
   
   // 設定変更時に自動保存（要素が存在する場合のみ）
   const soundCheckbox = document.getElementById('sound-enabled');
@@ -154,6 +156,16 @@ function showQuiz() {
   });
   
   updateStats();
+  
+  // ヒントを非表示にリセット
+  const hintContainer = document.getElementById('hint-container');
+  const hintBtn = document.getElementById('hint-btn');
+  if (hintContainer) hintContainer.classList.add('hidden');
+  if (hintBtn) hintBtn.textContent = '💡 ヒントを表示';
+  
+  // ヒントテキストを設定
+  const hintText = document.getElementById('hint-text');
+  if (hintText) hintText.textContent = q.meaning || '現代語訳が登録されていません';
   
   // 自動読み上げがONの場合は自動的に読み上げ
   if (autoSpeakEnabled) {
@@ -402,11 +414,12 @@ function showList() {
       div.className = "list-item";
       const isChecked = selected.includes(x.id);
       div.innerHTML = `
-        <label>
+        <label class="list-label">
           <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSelect(${x.id}, this.checked)">
           <span class="list-number">${x.id}.</span>
           <span class="list-text">${x.kanji}</span>
         </label>
+        <button class="detail-btn" onclick="showWakaDetail(${x.id})">詳細</button>
       `;
       categoryContent.appendChild(div);
     });
@@ -424,12 +437,14 @@ function selectCategory(start, end) {
       selected.push(i);
     }
   }
+  saveSelectedSongs();  // 選択を保存
   showList(); // 再描画
 }
 
 // カテゴリ全体を解除
 function deselectCategory(start, end) {
   selected = selected.filter(id => id < start || id > end);
+  saveSelectedSongs();  // 選択を保存
   showList(); // 再描画
 }
 
@@ -441,21 +456,72 @@ function toggleSelect(id, checked) {
   } else {
     selected = selected.filter(x => x !== id);
   }
+  saveSelectedSongs();  // 選択を保存
   updateSelectedCount();
+}
+
+// 選択された歌を保存
+function saveSelectedSongs() {
+  localStorage.setItem('hyakunin-selected', JSON.stringify(selected));
+}
+
+// 選択された歌を読み込み
+function loadSelectedSongs() {
+  const savedSelected = localStorage.getItem('hyakunin-selected');
+  if (savedSelected) {
+    selected = JSON.parse(savedSelected);
+  }
 }
 
 function selectAll() {
   selected = hyaku.map(x => x.id);
+  saveSelectedSongs();  // 選択を保存
   showList();
 }
 
 function deselectAll() {
   selected = [];
+  saveSelectedSongs();  // 選択を保存
   showList();
 }
 
 function updateSelectedCount() {
   document.getElementById('selected-count').textContent = selected.length;
+}
+
+// ヒント表示切り替え
+function toggleHint() {
+  const hintContainer = document.getElementById('hint-container');
+  const hintBtn = document.getElementById('hint-btn');
+  
+  if (hintContainer.classList.contains('hidden')) {
+    hintContainer.classList.remove('hidden');
+    hintBtn.textContent = '💡 ヒントを非表示';
+  } else {
+    hintContainer.classList.add('hidden');
+    hintBtn.textContent = '💡 ヒントを表示';
+  }
+}
+
+// 歌の詳細をダイアログで表示
+function showWakaDetail(id) {
+  const waka = hyaku.find(x => x.id === id);
+  if (!waka) return;
+  
+  const message = `
+📜 第${waka.id}首
+
+【上の句】
+${waka.kanji}
+
+【下の句】
+${waka.shimo}
+
+【現代語訳】
+${waka.meaning || '現代語訳が登録されていません'}
+  `.trim();
+  
+  alert(message);
 }
 
 function backToTitle() {

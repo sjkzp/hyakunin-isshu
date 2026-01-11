@@ -102,6 +102,15 @@
     </div>
 
     <div id="choices" class="choices-container"></div>
+    
+    <!-- ヒント表示ボタン -->
+    <button class="hint-btn" id="hint-btn" onclick="toggleHint()">
+      💡 ヒントを表示
+    </button>
+    <div class="hint-container hidden" id="hint-container">
+      <div class="hint-label">現代語訳</div>
+      <div class="hint-text" id="hint-text"></div>
+    </div>
   </div>
   
   <button class="quit-btn" onclick="quitGame()">挑戦を中断</button>
