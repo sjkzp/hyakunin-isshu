@@ -469,11 +469,12 @@ body {
   font-size: 3.2rem;
   font-weight: 800;
   z-index: 1000;
-  animation: feedbackPop 0.8s ease-out;
+  animation: feedbackPop 1.2s ease-out forwards;  /* forwardsを追加、時間を1.2sに */
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   max-width: 90%;
   text-align: center;
+  opacity: 0;  /* 初期状態を非表示に */
 }
 
 .feedback.correct {
@@ -1263,17 +1264,15 @@ body {
     padding: 0 15px;
   }
   
-  /* スマホでは注意書きを短縮 */
-  .footer-note::before {
-    content: "※ 学習補助としてご利用ください";
-  }
-  
+  /* スマホでは元のテキストを非表示にして短縮版のみ表示 */
   .footer-note {
     font-size: 0;  /* 元のテキストを非表示 */
   }
   
   .footer-note::before {
+    content: "※ 学習補助としてご利用ください";
     font-size: 0.7rem;  /* 短縮版のみ表示 */
+    display: block;
   }
   
   .footer-links {
@@ -1431,4 +1430,251 @@ body {
 
 .detail-btn:active {
   transform: translateY(0);
+}
+
+/* コンテンツページへのリンク */
+.content-links {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.content-link {
+  padding: 12px 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #8b4513;
+  border-radius: 10px;
+  color: #8b4513;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-link:hover {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffaf0 100%);
+  border-color: #daa520;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .content-links {
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .content-link {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+  }
+}
+
+/* 歌詳細モーダル */
+.waka-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.waka-detail-content {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffaf0 100%);
+  border-radius: 15px;
+  border: 3px solid #8b4513;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.waka-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 2px solid #daa520;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(218, 165, 32, 0.1) 100%);
+}
+
+.waka-detail-header h3 {
+  margin: 0;
+  color: #8b4513;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #8b4513;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  background: rgba(139, 69, 19, 0.1);
+  transform: rotate(90deg);
+}
+
+.waka-detail-body {
+  padding: 25px;
+}
+
+.waka-detail-section {
+  margin-bottom: 25px;
+}
+
+.waka-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.waka-detail-label {
+  font-size: 0.9rem;
+  color: #8b4513;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.waka-detail-label::before {
+  content: '▸';
+  margin-right: 5px;
+  color: #daa520;
+}
+
+.waka-detail-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #2c1810;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #daa520;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.waka-detail-footer {
+  padding: 15px 25px 20px;
+  text-align: center;
+  border-top: 2px solid #daa520;
+}
+
+.modal-ok-btn {
+  padding: 12px 40px;
+  background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Noto Serif JP', serif;
+}
+
+.modal-ok-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(139, 69, 19, 0.4);
+}
+
+.modal-ok-btn:active {
+  transform: translateY(0);
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+  .waka-detail-modal {
+    padding: 15px;
+  }
+  
+  .waka-detail-content {
+    max-height: 85vh;
+  }
+  
+  .waka-detail-header {
+    padding: 15px 20px;
+  }
+  
+  .waka-detail-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-close-btn {
+    font-size: 1.8rem;
+    width: 35px;
+    height: 35px;
+  }
+  
+  .waka-detail-body {
+    padding: 20px;
+  }
+  
+  .waka-detail-section {
+    margin-bottom: 20px;
+  }
+  
+  .waka-detail-label {
+    font-size: 0.85rem;
+  }
+  
+  .waka-detail-text {
+    font-size: 1rem;
+    padding: 12px;
+    line-height: 1.7;
+  }
+  
+  .waka-detail-footer {
+    padding: 12px 20px 15px;
+  }
+  
+  .modal-ok-btn {
+    padding: 10px 35px;
+    font-size: 0.95rem;
+    width: 100%;
+  }
 }

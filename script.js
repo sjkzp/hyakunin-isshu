@@ -1,5 +1,5 @@
-// localStorageから選択された歌を読み込む、なければ1-20首をデフォルト
-let selected = JSON.parse(localStorage.getItem('hyakunin-selected') || '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]');
+// localStorageから選択された歌を読み込む、なければ1-10首をデフォルト
+let selected = JSON.parse(localStorage.getItem('hyakunin-selected') || '[1,2,3,4,5,6,7,8,9,10]');
 let currentQuiz = [];
 let index = 0;
 
@@ -11,9 +11,10 @@ let highScore = 0;
 
 // 設定
 let soundEnabled = true;
-let animationEnabled = true;
 let choiceCount = 3;
 let autoSpeakEnabled = true;
+let hintMode = 'toggle'; // 'toggle' or 'always'
+let quizCount = 10; // 出題件数
 
 // ローカルストレージから最高記録を読み込み
 window.addEventListener('load', () => {
@@ -25,32 +26,41 @@ window.addEventListener('load', () => {
   
   // 設定変更時に自動保存（要素が存在する場合のみ）
   const soundCheckbox = document.getElementById('sound-enabled');
-  const animationCheckbox = document.getElementById('animation-enabled');
   const choiceSelect = document.getElementById('choice-count');
   const autoSpeakCheckbox = document.getElementById('auto-speak-enabled');
+  const hintModeSelect = document.getElementById('hint-mode');
+  const quizCountSelect = document.getElementById('quiz-count');
   
   if (soundCheckbox) soundCheckbox.addEventListener('change', saveSettings);
-  if (animationCheckbox) animationCheckbox.addEventListener('change', saveSettings);
   if (choiceSelect) choiceSelect.addEventListener('change', saveSettings);
   if (autoSpeakCheckbox) autoSpeakCheckbox.addEventListener('change', saveSettings);
+  if (hintModeSelect) hintModeSelect.addEventListener('change', saveSettings);
+  if (quizCountSelect) quizCountSelect.addEventListener('change', saveSettings);
 });
 
 // 設定を読み込み
 function loadSettings() {
   soundEnabled = localStorage.getItem('sound-enabled') !== 'false';
-  animationEnabled = localStorage.getItem('animation-enabled') !== 'false';
   choiceCount = parseInt(localStorage.getItem('choice-count') || '3');
   autoSpeakEnabled = localStorage.getItem('auto-speak-enabled') !== 'false';
+  hintMode = localStorage.getItem('hint-mode') || 'toggle';
+  quizCount = parseInt(localStorage.getItem('quiz-count') || '10');
   
   const soundCheckbox = document.getElementById('sound-enabled');
-  const animationCheckbox = document.getElementById('animation-enabled');
   const choiceSelect = document.getElementById('choice-count');
   const autoSpeakCheckbox = document.getElementById('auto-speak-enabled');
+  const hintModeSelect = document.getElementById('hint-mode');
+  const quizCountSelect = document.getElementById('quiz-count');
   
   if (soundCheckbox) soundCheckbox.checked = soundEnabled;
-  if (animationCheckbox) animationCheckbox.checked = animationEnabled;
   if (choiceSelect) choiceSelect.value = choiceCount;
   if (autoSpeakCheckbox) autoSpeakCheckbox.checked = autoSpeakEnabled;
+  if (hintModeSelect) hintModeSelect.value = hintMode;
+  if (quizCountSelect) {
+    // 選択可能な最大数を設定
+    updateQuizCountOptions();
+    quizCountSelect.value = quizCount;
+  }
 }
 
 // 設定画面を表示
@@ -63,14 +73,45 @@ function showSettings() {
 // 設定を保存
 function saveSettings() {
   soundEnabled = document.getElementById('sound-enabled').checked;
-  animationEnabled = document.getElementById('animation-enabled').checked;
   choiceCount = parseInt(document.getElementById('choice-count').value);
   autoSpeakEnabled = document.getElementById('auto-speak-enabled').checked;
+  hintMode = document.getElementById('hint-mode').value;
+  const quizCountValue = document.getElementById('quiz-count').value;
+  quizCount = quizCountValue === 'all' ? 9999 : parseInt(quizCountValue);
   
   localStorage.setItem('sound-enabled', soundEnabled);
-  localStorage.setItem('animation-enabled', animationEnabled);
   localStorage.setItem('choice-count', choiceCount);
   localStorage.setItem('auto-speak-enabled', autoSpeakEnabled);
+  localStorage.setItem('hint-mode', hintMode);
+  localStorage.setItem('quiz-count', quizCount);
+}
+
+// 出題件数の選択肢を更新
+function updateQuizCountOptions() {
+  const quizCountSelect = document.getElementById('quiz-count');
+  if (!quizCountSelect) return;
+  
+  const maxCount = selected.length || 100;
+  const options = [5, 10, 20, 30, 50, 100];
+  
+  // 現在の選択肢をクリア
+  quizCountSelect.innerHTML = '';
+  
+  // 選択可能な件数のオプションを追加
+  options.forEach(count => {
+    if (count <= maxCount) {
+      const option = document.createElement('option');
+      option.value = count;
+      option.textContent = `${count}問`;
+      quizCountSelect.appendChild(option);
+    }
+  });
+  
+  // 「全て」オプションを追加
+  const allOption = document.createElement('option');
+  allOption.value = 'all';
+  allOption.textContent = `全て（${maxCount}問）`;
+  quizCountSelect.appendChild(allOption);
 }
 
 // 最高記録を更新
@@ -80,8 +121,6 @@ function updateHighScore() {
 
 // 桜の花びらを生成
 function createSakura() {
-  if (!animationEnabled) return;
-  
   const container = document.getElementById('sakura-container');
   const sakuraCount = 20;
   
@@ -110,6 +149,10 @@ function startGame() {
   }
 
   shuffle(currentQuiz);
+  
+  // 出題件数で制限
+  const actualQuizCount = Math.min(quizCount, currentQuiz.length);
+  currentQuiz = currentQuiz.slice(0, actualQuizCount);
 
   index = 0;
   correct = 0;
@@ -155,17 +198,33 @@ function showQuiz() {
     container.appendChild(btn);
   });
   
+  // 前回の正解表示をクリア
+  const existingAnswer = document.getElementById('correct-answer-display');
+  if (existingAnswer) {
+    existingAnswer.remove();
+  }
+  
   updateStats();
   
-  // ヒントを非表示にリセット
+  // ヒントモードに応じて表示を制御
   const hintContainer = document.getElementById('hint-container');
   const hintBtn = document.getElementById('hint-btn');
-  if (hintContainer) hintContainer.classList.add('hidden');
-  if (hintBtn) hintBtn.textContent = '💡 ヒントを表示';
-  
-  // ヒントテキストを設定
   const hintText = document.getElementById('hint-text');
+  
   if (hintText) hintText.textContent = q.meaning || '現代語訳が登録されていません';
+  
+  if (hintMode === 'always') {
+    // 常に表示モード
+    if (hintContainer) hintContainer.classList.remove('hidden');
+    if (hintBtn) hintBtn.style.display = 'none'; // ボタンを非表示
+  } else {
+    // 表示・非表示を選択モード
+    if (hintContainer) hintContainer.classList.add('hidden');
+    if (hintBtn) {
+      hintBtn.style.display = 'block';
+      hintBtn.textContent = '💡 ヒントを表示';
+    }
+  }
   
   // 自動読み上げがONの場合は自動的に読み上げ
   if (autoSpeakEnabled) {
@@ -219,7 +278,7 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     // 選択したボタンを正解色に
     selectedButton.classList.add('selected-correct');
     
-    showFeedback('⭕ 正解', 'correct');
+    showFeedback('⭕ 正解！', 'correct');
     if (soundEnabled) playSound('correct');
     
     // コンボが3以上の時は炎エフェクト
@@ -324,15 +383,21 @@ function hideCorrectAnswer() {
 }
 
 function showFeedback(text, type) {
-  if (!animationEnabled) return;
-  
   const feedback = document.getElementById('feedback');
   feedback.textContent = text;
   feedback.className = `feedback ${type}`;
   
+  // アニメーションをリセットするために一旦削除して再追加
+  feedback.style.animation = 'none';
+  feedback.offsetHeight; // リフロー強制
+  feedback.style.animation = '';
+  
+  // hiddenクラスを削除して表示（不要だが念のため）
+  feedback.classList.remove('hidden');
+  
   setTimeout(() => {
     feedback.classList.add('hidden');
-  }, 800);
+  }, 1200); // アニメーション時間と同じ
 }
 
 function playSound(type) {
@@ -379,11 +444,16 @@ function showList() {
 
   // 20首ごとにカテゴリ分け
   const categories = [
-    { name: "No.1 (1-20首)", range: [1, 20] },
-    { name: "No.2 (21-40首)", range: [21, 40] },
-    { name: "No.3 (41-60首)", range: [41, 60] },
-    { name: "No.4 (61-80首)", range: [61, 80] },
-    { name: "No.5 (81-100首)", range: [81, 100] }
+    { name: "No.1 (1-10首)", range: [1, 10] },
+    { name: "No.2 (11-20首)", range: [11, 20] },
+    { name: "No.3 (21-30首)", range: [21, 30] },
+    { name: "No.4 (31-40首)", range: [31, 40] },
+    { name: "No.5 (41-50首)", range: [41, 50] },
+    { name: "No.6 (51-60首)", range: [51, 60] },
+    { name: "No.7 (61-70首)", range: [61, 70] },
+    { name: "No.8 (71-80首)", range: [71, 80] },
+    { name: "No.9 (81-90首)", range: [81, 90] },
+    { name: "No.10 (91-100首)", range: [91, 100] }
   ];
 
   categories.forEach((category, catIndex) => {
@@ -508,20 +578,43 @@ function showWakaDetail(id) {
   const waka = hyaku.find(x => x.id === id);
   if (!waka) return;
   
-  const message = `
-📜 第${waka.id}首
-
-【上の句】
-${waka.kanji}
-
-【下の句】
-${waka.shimo}
-
-【現代語訳】
-${waka.meaning || '現代語訳が登録されていません'}
-  `.trim();
+  // モーダルを作成
+  const modal = document.createElement('div');
+  modal.className = 'waka-detail-modal';
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  };
   
-  alert(message);
+  const content = document.createElement('div');
+  content.className = 'waka-detail-content';
+  content.innerHTML = `
+    <div class="waka-detail-header">
+      <h3>📜 第${waka.id}首</h3>
+      <button class="modal-close-btn" onclick="this.closest('.waka-detail-modal').remove()">×</button>
+    </div>
+    <div class="waka-detail-body">
+      <div class="waka-detail-section">
+        <div class="waka-detail-label">上の句</div>
+        <div class="waka-detail-text">${waka.kanji}</div>
+      </div>
+      <div class="waka-detail-section">
+        <div class="waka-detail-label">下の句</div>
+        <div class="waka-detail-text">${waka.shimo}</div>
+      </div>
+      <div class="waka-detail-section">
+        <div class="waka-detail-label">現代語訳</div>
+        <div class="waka-detail-text">${waka.meaning || '現代語訳が登録されていません'}</div>
+      </div>
+    </div>
+    <div class="waka-detail-footer">
+      <button class="modal-ok-btn" onclick="this.closest('.waka-detail-modal').remove()">閉じる</button>
+    </div>
+  `;
+  
+  modal.appendChild(content);
+  document.body.appendChild(modal);
 }
 
 function backToTitle() {
@@ -552,35 +645,17 @@ function showResult() {
   // ランクを判定
   let rank = '';
   let rankClass = '';
-  let message = '';
   
-  if (rate >= 95) {
-    rank = '🏆 歌仙';
-    message = '素晴らしい！まさに平安の歌人の如し。';
-  } else if (rate >= 85) {
-    rank = '🥇 上級';
-    message = '見事！百人一首をよく理解していますね。';
-  } else if (rate >= 70) {
-    rank = '🥈 中級';
-    message = 'よくできました！更なる高みを目指しましょう。';
-  } else if (rate >= 50) {
-    rank = '🥉 初級';
-    message = 'いい調子です。繰り返し挑戦しましょう。';
-  } else {
-    rank = '📝 見習';
-    message = 'これからです。一首一首、心を込めて。';
-  }
-  
-  document.getElementById('result-rank').textContent = rank;
+  document.getElementById('result-rank').textContent = ''; // ランク表示を空に
   document.getElementById('result-correct').textContent = correct;
   document.getElementById('result-wrong').textContent = wrong;
   document.getElementById('result-rate').textContent = rate + '%';
   document.getElementById('result-combo').textContent = maxCombo;
-  document.getElementById('result-message').textContent = message;
+  document.getElementById('result-message').textContent = ''; // メッセージを空に
   
   // 最高記録を更新した場合
   if (maxCombo > 0 && maxCombo === highScore) {
-    document.getElementById('result-message').textContent += '\n\n🎉 最高記録を更新！';
+    document.getElementById('result-message').textContent = '🎉 最高記録を更新しました！';
   }
 }
 
@@ -631,7 +706,7 @@ function speakKami() {
   speechSynthesis.cancel(); // 前の読み上げをキャンセル
   speechSynthesis.speak(uttr);
   
-  if (soundEnabled && animationEnabled) {
+  if (soundEnabled) {
     const btn = document.querySelector('.speak-btn');
     btn.style.transform = 'scale(0.95)';
     setTimeout(() => {

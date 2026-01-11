@@ -162,13 +162,6 @@
     
     <div class="setting-item">
       <label>
-        <input type="checkbox" id="animation-enabled" checked>
-        アニメーションを表示
-      </label>
-    </div>
-    
-    <div class="setting-item">
-      <label>
         <input type="checkbox" id="auto-speak-enabled" checked>
         上の句を自動で読み上げる
       </label>
@@ -181,6 +174,31 @@
           <option value="3">3択</option>
           <option value="4">4択</option>
           <option value="5">5択</option>
+        </select>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label>
+        ヒント表示：
+        <select id="hint-mode">
+          <option value="toggle">表示・非表示を選択</option>
+          <option value="always">常に表示</option>
+        </select>
+      </label>
+    </div>
+    
+    <div class="setting-item">
+      <label>
+        出題件数：
+        <select id="quiz-count">
+          <option value="5">5問</option>
+          <option value="10" selected>10問</option>
+          <option value="20">20問</option>
+          <option value="30">30問</option>
+          <option value="50">50問</option>
+          <option value="100">100問</option>
+          <option value="all">全て</option>
         </select>
       </label>
     </div>
