@@ -1263,18 +1263,14 @@ body {
     padding: 0 15px;
   }
   
-  /* スマホでは元のテキストを非表示にして短縮版のみ表示 */
-  .footer-note {
-    visibility: hidden;  /* 元のテキストを完全に非表示 */
-    position: relative;
-    height: auto;
+  /* タイトル画面のフッター */
+  .title-footer {
+    margin-top: 30px;
   }
   
-  .footer-note::before {
-    content: "※ 学習補助としてご利用ください";
-    visibility: visible;  /* ::beforeのみ表示 */
+  .footer-note {
     font-size: 0.7rem;
-    display: block;
+    padding: 0 15px;
   }
   
   .footer-links {
