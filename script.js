@@ -23,6 +23,7 @@ window.addEventListener('load', () => {
   createSakura();
   loadSettings();
   loadSelectedSongs();  // 選択された歌を読み込む
+  updateQuizCountOptions(); // 出題件数の選択肢を初期化
   
   // 設定変更時に自動保存（要素が存在する場合のみ）
   const soundCheckbox = document.getElementById('sound-enabled');
@@ -99,7 +100,8 @@ function updateQuizCountOptions() {
   const quizCountSelect = document.getElementById('quiz-count');
   if (!quizCountSelect) return;
   
-  const selectedCount = selected.length || 100;
+  // 0首選択の場合は100首として扱う
+  const selectedCount = selected.length === 0 ? 100 : selected.length;
   const maxQuizCount = Math.min(selectedCount, 10); // 最大10問まで
   const options = [5, 10, 20, 30, 50, 100];
   
@@ -157,17 +159,12 @@ function startGame() {
   maxCombo = 0;
   currentQuiz = [];
   
-  // チェックされた歌だけ抽出
+  // チェックされた歌だけ抽出（0首の場合は全100首を対象）
   if (selected.length > 0) {
     currentQuiz = hyaku.filter(x => selected.includes(x.id));
   } else {
+    // 0首選択の場合は全100首から出題
     currentQuiz = [...hyaku];
-  }
-  
-  // 選択された歌が0の場合はエラー
-  if (currentQuiz.length === 0) {
-    alert('出題する歌を選択してください。');
-    return;
   }
 
   shuffle(currentQuiz);
@@ -182,10 +179,18 @@ function startGame() {
   
   currentQuiz = currentQuiz.slice(0, actualQuizCount);
   
-  // 念のため再度チェック
+  // 万が一問題が0の場合は、強制的に全100首から出題
   if (currentQuiz.length === 0) {
-    alert('出題する問題がありません。');
-    return;
+    currentQuiz = [...hyaku];
+    shuffle(currentQuiz);
+    
+    // 出題件数を決定（設定値または最大10問）
+    if (quizCount >= 9999) {
+      actualQuizCount = currentQuiz.length;
+    } else {
+      actualQuizCount = Math.min(quizCount, 10); // 最大10問
+    }
+    currentQuiz = currentQuiz.slice(0, actualQuizCount);
   }
   
   document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
@@ -590,7 +595,8 @@ function deselectAll() {
 }
 
 function updateSelectedCount() {
-  document.getElementById('selected-count').textContent = selected.length;
+  const countElement = document.getElementById('selected-count');
+  countElement.textContent = selected.length;
 }
 
 // ヒント表示切り替え
