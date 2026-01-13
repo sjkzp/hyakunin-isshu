@@ -731,7 +731,33 @@ function speakKami() {
   const q = currentQuiz[index];
   
   // 句点で区切られたyomiを使用（句点は自然な間になる）
-  const kamiText = q.yomi;
+  let kamiText = q.yomi;
+  
+  // 「はな」「はし」「はま」など、変換してはいけない「は」を保護
+  kamiText = kamiText
+    .replace(/はな/g, '__HANA__')
+    .replace(/はし/g, '__HASHI__')
+    .replace(/はる/g, '__HARU__')
+    .replace(/はや/g, '__HAYA__')
+    .replace(/はて/g, '__HATE__')
+    .replace(/はら/g, '__HARA__')
+    .replace(/はじ/g, '__HAJI__')
+    .replace(/はま/g, '__HAMA__')
+    .replace(/はか/g, '__HAKA__')
+    .replace(/はこ/g, '__HAKO__');
+  
+  // 保護した単語を復元
+  kamiText = kamiText
+    .replace(/__HANA__/g, 'はな')
+    .replace(/__HASHI__/g, 'はし')
+    .replace(/__HARU__/g, 'はる')
+    .replace(/__HAYA__/g, 'はや')
+    .replace(/__HATE__/g, 'はて')
+    .replace(/__HARA__/g, 'はら')
+    .replace(/__HAJI__/g, 'はじ')
+    .replace(/__HAMA__/g, 'はま')
+    .replace(/__HAKA__/g, 'はか')
+    .replace(/__HAKO__/g, 'はこ');
   
   // Web Speech APIで日本語の自然な読み上げ
   const uttr = new SpeechSynthesisUtterance(kamiText);
