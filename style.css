@@ -919,6 +919,35 @@ body {
   box-shadow: 0 8px 20px rgba(112, 128, 144, 0.4);
 }
 
+/* リセットボタン */
+.btn-reset {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Noto Serif JP', serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  width: 100%;
+  max-width: 300px;
+  display: block;
+  margin: 0 auto;
+}
+
+.btn-reset:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(220, 20, 60, 0.4);
+  background: linear-gradient(135deg, #ff1744 0%, #dc143c 100%);
+}
+
+.btn-reset:active {
+  transform: translateY(-1px);
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
   .title-content {

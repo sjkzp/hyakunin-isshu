@@ -44,7 +44,14 @@ function loadSettings() {
   choiceCount = parseInt(localStorage.getItem('choice-count') || '3');
   autoSpeakEnabled = localStorage.getItem('auto-speak-enabled') !== 'false';
   hintMode = localStorage.getItem('hint-mode') || 'toggle';
-  quizCount = parseInt(localStorage.getItem('quiz-count') || '10');
+  
+  // quizCountの読み込み（数値または"all"）
+  const savedQuizCount = localStorage.getItem('quiz-count') || '10';
+  if (savedQuizCount === 'all' || savedQuizCount === '9999') {
+    quizCount = 9999; // "all"の場合は大きな数値
+  } else {
+    quizCount = parseInt(savedQuizCount) || 10;
+  }
   
   const soundCheckbox = document.getElementById('sound-enabled');
   const choiceSelect = document.getElementById('choice-count');
@@ -59,7 +66,8 @@ function loadSettings() {
   if (quizCountSelect) {
     // 選択可能な最大数を設定
     updateQuizCountOptions();
-    quizCountSelect.value = quizCount;
+    // quizCountが9999（all）の場合は"all"を選択
+    quizCountSelect.value = quizCount === 9999 ? 'all' : quizCount;
   }
 }
 
@@ -138,27 +146,47 @@ function createSakura() {
 function startGame() {
   saveSettings(); // 設定を保存
   
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  document.getElementById("quiz-screen").classList.remove("hidden");
-
+  // クイズ状態を完全にリセット（強制終了後の不具合対策）
+  index = 0;
+  correct = 0;
+  wrong = 0;
+  combo = 0;
+  maxCombo = 0;
+  currentQuiz = [];
+  
   // チェックされた歌だけ抽出
   if (selected.length > 0) {
     currentQuiz = hyaku.filter(x => selected.includes(x.id));
   } else {
     currentQuiz = [...hyaku];
   }
+  
+  // 選択された歌が0の場合はエラー
+  if (currentQuiz.length === 0) {
+    alert('出題する歌を選択してください。');
+    return;
+  }
 
   shuffle(currentQuiz);
   
-  // 出題件数で制限
-  const actualQuizCount = Math.min(quizCount, currentQuiz.length);
+  // 出題件数で制限（9999は"all"を意味する）
+  let actualQuizCount;
+  if (quizCount >= 9999) {
+    actualQuizCount = currentQuiz.length; // 全て出題
+  } else {
+    actualQuizCount = Math.min(quizCount, currentQuiz.length);
+  }
+  
   currentQuiz = currentQuiz.slice(0, actualQuizCount);
-
-  index = 0;
-  correct = 0;
-  wrong = 0;
-  combo = 0;
-  maxCombo = 0;
+  
+  // 念のため再度チェック
+  if (currentQuiz.length === 0) {
+    alert('出題する問題がありません。');
+    return;
+  }
+  
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  document.getElementById("quiz-screen").classList.remove("hidden");
 
   showQuiz();
   updateStats();
@@ -618,6 +646,14 @@ function showWakaDetail(id) {
 }
 
 function backToTitle() {
+  // クイズ状態を完全にリセット（次回のstartGameで正常動作するように）
+  index = 0;
+  correct = 0;
+  wrong = 0;
+  combo = 0;
+  maxCombo = 0;
+  currentQuiz = [];
+  
   document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
   document.getElementById("title-screen").classList.remove("hidden");
 }
@@ -820,5 +856,42 @@ function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// localStorageを初期化する関数
+function resetAllData() {
+  if (confirm('本当にすべてのデータを初期化しますか？\n\n・最高記録\n・設定内容\n・選択した歌\n\nすべてがリセットされます。')) {
+    if (confirm('最終確認：本当に初期化しますか？\nこの操作は取り消せません。')) {
+      // localStorageをすべてクリア
+      localStorage.clear();
+      
+      // グローバル変数をデフォルトに戻す
+      selected = [1,2,3,4,5,6,7,8,9,10];
+      highScore = 0;
+      soundEnabled = true;
+      choiceCount = 3;
+      autoSpeakEnabled = true;
+      hintMode = 'toggle';
+      quizCount = 10;
+      
+      // クイズ状態もリセット
+      index = 0;
+      correct = 0;
+      wrong = 0;
+      combo = 0;
+      maxCombo = 0;
+      currentQuiz = [];
+      
+      // UIを更新
+      updateHighScore();
+      loadSettings();
+      loadSelectedSongs();
+      
+      alert('すべてのデータを初期化しました。');
+      
+      // タイトル画面に戻る
+      backToTitle();
+    }
   }
 }
