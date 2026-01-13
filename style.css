@@ -72,7 +72,7 @@ body {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   border: 3px solid #8b4513;
   position: relative;
-  max-width: 750px;  /* 600px → 750px に拡大 */
+  max-width: 700px;  /* 750px → 700px に調整 */
 }
 
 .title-content::before {
@@ -921,6 +921,11 @@ body {
 
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
+  .title-content {
+    padding: 40px 20px;  /* パディングを減らす */
+    max-width: 100%;  /* 幅いっぱいに */
+  }
+  
   .main-title {
     font-size: 2.5rem;
     letter-spacing: 8px;
@@ -1677,118 +1682,3 @@ body {
   }
 }
 
-/* サイト説明セクション */
-.site-description {
-  max-width: 700px;
-  margin: 35px auto 40px auto;  /* 上マージンを少し増やす */
-  padding: 25px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  border: 2px solid #daa520;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
-
-.site-description p {
-  color: #333;
-  line-height: 2;  /* 1.8 → 2 に変更 */
-  margin-bottom: 25px;  /* 20px → 25px に変更 */
-  font-size: 1rem;
-}
-
-.feature-list {
-  margin: 30px 0;  /* 25px → 30px に変更 */
-}
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 18px;  /* 15px → 18px に変更 */
-  padding: 14px;  /* 12px → 14px に変更 */
-  background: linear-gradient(135deg, #fff9e6 0%, #fffaf0 100%);
-  border-radius: 10px;
-  border-left: 4px solid #daa520;
-}
-
-.feature-icon {
-  font-size: 1.5rem;
-  margin-right: 15px;  /* 12px → 15px に変更 */
-  flex-shrink: 0;
-}
-
-.feature-text {
-  color: #333;
-  line-height: 1.8;  /* 1.6 → 1.8 に変更 */
-  font-size: 0.95rem;
-}
-
-.feature-text strong {
-  color: #8b4513;
-  font-weight: 600;
-}
-
-.description-note {
-  color: #555;
-  font-size: 0.95rem;
-  margin-top: 25px;  /* 20px → 25px に変更 */
-  padding-top: 25px;  /* 20px → 25px に変更 */
-  border-top: 1px solid #daa520;
-  line-height: 2;  /* 追加 */
-}
-
-@media (max-width: 768px) {
-  .site-description {
-    padding: 20px 15px;
-    margin: 20px 10px 30px 10px;  /* 下マージンを追加 */
-  }
-  
-  .site-description p {
-    font-size: 0.9rem;
-    line-height: 1.9;  /* 追加 */
-    margin-bottom: 20px;  /* 追加 */
-  }
-  
-  .feature-item {
-    padding: 12px;  /* 10px → 12px に変更 */
-    margin-bottom: 15px;  /* 12px → 15px に変更 */
-  }
-  
-  .feature-icon {
-    font-size: 1.3rem;
-    margin-right: 12px;  /* 10px → 12px に変更 */
-  }
-  
-  .feature-text {
-    font-size: 0.85rem;
-    line-height: 1.7;  /* 追加 */
-  }
-  
-  .description-note {
-    font-size: 0.85rem;
-    line-height: 1.9;  /* 追加 */
-    margin-top: 20px;
-    padding-top: 20px;
-  }
-}
-
-/* 簡潔な1行説明 */
-.site-summary {
-  font-size: 1.1rem;
-  color: #8b4513;
-  margin: 20px auto 40px auto;  /* 下マージンを30px → 40px に増やす */
-  max-width: 600px;
-  font-weight: 500;
-  line-height: 1.8;
-  padding: 15px 20px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
-  border: 2px solid #daa520;
-}
-
-@media (max-width: 768px) {
-  .site-summary {
-    font-size: 1rem;
-    margin: 15px 10px 30px 10px;  /* 下マージンを25px → 30px に増やす */
-    padding: 12px 15px;
-  }
-}
