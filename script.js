@@ -823,9 +823,10 @@ function speakShimo(shimoText) {
     .replace(/ゑ/g, 'え')
     // 特定の単語の変換（より具体的なパターンから順に）
     .replace(/かよひじ/g, 'かよいじ')
-    // 「じや」「ぞや」など助詞の組み合わせを保護（「じゃ」にならないように）
-    .replace(/じや/g, '__JIYA__')
-    .replace(/ぞや/g, '__ZOYA__')
+    // 「じや」を含む特定パターンを保護（「かけじや」など）
+    .replace(/かけじや/g, 'かけじ や')
+    .replace(/じや/g, 'じ や')
+    .replace(/ぞや/g, 'ぞ や')
     // 「はな」「はし」「はる」など、変換してはいけない「は」を保護
     .replace(/はな/g, '__HANA__')
     .replace(/はし/g, '__HASHI__')
@@ -853,9 +854,6 @@ function speakShimo(shimoText) {
     // 「いひ」「いふ」系
     .replace(/いひ/g, 'いい')
     .replace(/いふ/g, 'いう')
-    // 保護した助詞を復元
-    .replace(/__JIYA__/g, 'じや')
-    .replace(/__ZOYA__/g, 'ぞや')
     // 保護した「は」を復元
     .replace(/__HANA__/g, 'はな')
     .replace(/__HASHI__/g, 'はし')
