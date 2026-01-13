@@ -733,31 +733,18 @@ function speakKami() {
   // 句点で区切られたyomiを使用（句点は自然な間になる）
   let kamiText = q.yomi;
   
-  // 「はな」「はし」「はま」など、変換してはいけない「は」を保護
+  // 「はな」「はし」「はま」など、名詞の「は」をカタカナに変換して誤読を防ぐ
   kamiText = kamiText
-    .replace(/はな/g, '__HANA__')
-    .replace(/はし/g, '__HASHI__')
-    .replace(/はる/g, '__HARU__')
-    .replace(/はや/g, '__HAYA__')
-    .replace(/はて/g, '__HATE__')
-    .replace(/はら/g, '__HARA__')
-    .replace(/はじ/g, '__HAJI__')
-    .replace(/はま/g, '__HAMA__')
-    .replace(/はか/g, '__HAKA__')
-    .replace(/はこ/g, '__HAKO__');
-  
-  // 保護した単語を復元
-  kamiText = kamiText
-    .replace(/__HANA__/g, 'はな')
-    .replace(/__HASHI__/g, 'はし')
-    .replace(/__HARU__/g, 'はる')
-    .replace(/__HAYA__/g, 'はや')
-    .replace(/__HATE__/g, 'はて')
-    .replace(/__HARA__/g, 'はら')
-    .replace(/__HAJI__/g, 'はじ')
-    .replace(/__HAMA__/g, 'はま')
-    .replace(/__HAKA__/g, 'はか')
-    .replace(/__HAKO__/g, 'はこ');
+    .replace(/はな/g, 'ハナ')
+    .replace(/はし/g, 'ハシ')
+    .replace(/はる/g, 'ハル')
+    .replace(/はや/g, 'ハヤ')
+    .replace(/はて/g, 'ハテ')
+    .replace(/はら/g, 'ハラ')
+    .replace(/はじ/g, 'ハジ')
+    .replace(/はま/g, 'ハマ')
+    .replace(/はか/g, 'ハカ')
+    .replace(/はこ/g, 'ハコ');
   
   // Web Speech APIで日本語の自然な読み上げ
   const uttr = new SpeechSynthesisUtterance(kamiText);
@@ -854,17 +841,17 @@ function speakShimo(shimoText) {
     // 「いひ」「いふ」系
     .replace(/いひ/g, 'いい')
     .replace(/いふ/g, 'いう')
-    // 保護した「は」を復元
-    .replace(/__HANA__/g, 'はな')
-    .replace(/__HASHI__/g, 'はし')
-    .replace(/__HARU__/g, 'はる')
-    .replace(/__HAYA__/g, 'はや')
-    .replace(/__HATE__/g, 'はて')
-    .replace(/__HARA__/g, 'はら')
-    .replace(/__HAJI__/g, 'はじ')
-    .replace(/__HAMA__/g, 'はま')
-    .replace(/__HAKA__/g, 'はか')
-    .replace(/__HAKO__/g, 'はこ')
+    // 保護した「は」をカタカナに復元（誤読を防ぐ）
+    .replace(/__HANA__/g, 'ハナ')
+    .replace(/__HASHI__/g, 'ハシ')
+    .replace(/__HARU__/g, 'ハル')
+    .replace(/__HAYA__/g, 'ハヤ')
+    .replace(/__HATE__/g, 'ハテ')
+    .replace(/__HARA__/g, 'ハラ')
+    .replace(/__HAJI__/g, 'ハジ')
+    .replace(/__HAMA__/g, 'ハマ')
+    .replace(/__HAKA__/g, 'ハカ')
+    .replace(/__HAKO__/g, 'ハコ')
     // 「ひ」が助詞の場合（より一般的なルール）
     .replace(/([^ぁ-ん])ひ /g, '$1い ')
     .replace(/([^ぁ-ん])ひ([^ぁ-ん])/g, '$1い$2')
