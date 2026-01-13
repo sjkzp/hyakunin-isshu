@@ -67,8 +67,35 @@ function loadSettings() {
   if (quizCountSelect) {
     // 選択可能な最大数を設定
     updateQuizCountOptions();
-    // quizCountが9999（all）の場合は"all"を選択
-    quizCountSelect.value = quizCount === 9999 ? 'all' : quizCount;
+    
+    // 選択数に応じた最大値を計算
+    const selectedCount = selected.length === 0 ? 100 : selected.length;
+    const maxAvailable = Math.min(selectedCount, 10);
+    
+    // 保存されているquizCountの値を設定
+    let valueToSet;
+    if (quizCount === 9999) {
+      // "all"の場合
+      valueToSet = 'all';
+    } else if (quizCount > maxAvailable) {
+      // 保存値が選択可能数より大きい場合は最大値を使用
+      valueToSet = maxAvailable;
+      quizCount = maxAvailable;
+    } else {
+      valueToSet = quizCount;
+    }
+    
+    // 選択肢に存在するか確認
+    const options = Array.from(quizCountSelect.options).map(opt => opt.value);
+    if (!options.includes(String(valueToSet))) {
+      // 存在しない場合は最後のオプション（最大値）を選択
+      if (quizCountSelect.options.length > 0) {
+        valueToSet = quizCountSelect.options[quizCountSelect.options.length - 1].value;
+        quizCount = valueToSet === 'all' ? 9999 : parseInt(valueToSet);
+      }
+    }
+    
+    quizCountSelect.value = valueToSet;
   }
 }
 
