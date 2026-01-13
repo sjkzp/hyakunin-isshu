@@ -1775,7 +1775,7 @@ body {
 .site-summary {
   font-size: 1.1rem;
   color: #8b4513;
-  margin: 20px auto 30px auto;
+  margin: 20px auto 40px auto;  /* 下マージンを30px → 40px に増やす */
   max-width: 600px;
   font-weight: 500;
   line-height: 1.8;
@@ -1788,7 +1788,7 @@ body {
 @media (max-width: 768px) {
   .site-summary {
     font-size: 1rem;
-    margin: 15px 10px 25px 10px;
+    margin: 15px 10px 30px 10px;  /* 下マージンを25px → 30px に増やす */
     padding: 12px 15px;
   }
 }
