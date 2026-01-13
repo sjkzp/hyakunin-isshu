@@ -99,15 +99,16 @@ function updateQuizCountOptions() {
   const quizCountSelect = document.getElementById('quiz-count');
   if (!quizCountSelect) return;
   
-  const maxCount = selected.length || 100;
+  const selectedCount = selected.length || 100;
+  const maxQuizCount = Math.min(selectedCount, 10); // 最大10問まで
   const options = [5, 10, 20, 30, 50, 100];
   
   // 現在の選択肢をクリア
   quizCountSelect.innerHTML = '';
   
-  // 選択可能な件数のオプションを追加
+  // 選択可能な件数のオプションを追加（最大10問まで）
   options.forEach(count => {
-    if (count <= maxCount) {
+    if (count <= maxQuizCount) {
       const option = document.createElement('option');
       option.value = count;
       option.textContent = `${count}問`;
@@ -115,11 +116,13 @@ function updateQuizCountOptions() {
     }
   });
   
-  // 「全て」オプションを追加
-  const allOption = document.createElement('option');
-  allOption.value = 'all';
-  allOption.textContent = `全て（${maxCount}問）`;
-  quizCountSelect.appendChild(allOption);
+  // 「全て」オプションを追加（選択数が10以下の場合のみ）
+  if (selectedCount <= 10) {
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = `全て（${selectedCount}問）`;
+    quizCountSelect.appendChild(allOption);
+  }
 }
 
 // 最高記録を更新
@@ -556,6 +559,7 @@ function toggleSelect(id, checked) {
   }
   saveSelectedSongs();  // 選択を保存
   updateSelectedCount();
+  updateQuizCountOptions(); // 出題件数の選択肢を更新
 }
 
 // 選択された歌を保存
@@ -575,12 +579,14 @@ function selectAll() {
   selected = hyaku.map(x => x.id);
   saveSelectedSongs();  // 選択を保存
   showList();
+  updateQuizCountOptions(); // 出題件数の選択肢を更新
 }
 
 function deselectAll() {
   selected = [];
   saveSelectedSongs();  // 選択を保存
   showList();
+  updateQuizCountOptions(); // 出題件数の選択肢を更新
 }
 
 function updateSelectedCount() {
