@@ -65,37 +65,8 @@ function loadSettings() {
   if (autoSpeakCheckbox) autoSpeakCheckbox.checked = autoSpeakEnabled;
   if (hintModeSelect) hintModeSelect.value = hintMode;
   if (quizCountSelect) {
-    // 選択可能な最大数を設定
+    // 選択可能な最大数を設定（デフォルト値も自動設定される）
     updateQuizCountOptions();
-    
-    // 選択数に応じた最大値を計算
-    const selectedCount = selected.length === 0 ? 100 : selected.length;
-    const maxAvailable = Math.min(selectedCount, 10);
-    
-    // 保存されているquizCountの値を設定
-    let valueToSet;
-    if (quizCount === 9999) {
-      // "all"の場合
-      valueToSet = 'all';
-    } else if (quizCount > maxAvailable) {
-      // 保存値が選択可能数より大きい場合は最大値を使用
-      valueToSet = maxAvailable;
-      quizCount = maxAvailable;
-    } else {
-      valueToSet = quizCount;
-    }
-    
-    // 選択肢に存在するか確認
-    const options = Array.from(quizCountSelect.options).map(opt => opt.value);
-    if (!options.includes(String(valueToSet))) {
-      // 存在しない場合は最後のオプション（最大値）を選択
-      if (quizCountSelect.options.length > 0) {
-        valueToSet = quizCountSelect.options[quizCountSelect.options.length - 1].value;
-        quizCount = valueToSet === 'all' ? 9999 : parseInt(valueToSet);
-      }
-    }
-    
-    quizCountSelect.value = valueToSet;
   }
 }
 
@@ -129,15 +100,14 @@ function updateQuizCountOptions() {
   
   // 0首選択の場合は100首として扱う
   const selectedCount = selected.length === 0 ? 100 : selected.length;
-  const maxQuizCount = Math.min(selectedCount, 10); // 最大10問まで
   const options = [5, 10, 20, 30, 50, 100];
   
   // 現在の選択肢をクリア
   quizCountSelect.innerHTML = '';
   
-  // 選択可能な件数のオプションを追加（最大10問まで）
+  // 選択可能な件数のオプションを追加（選択数まで）
   options.forEach(count => {
-    if (count <= maxQuizCount) {
+    if (count <= selectedCount) {
       const option = document.createElement('option');
       option.value = count;
       option.textContent = `${count}問`;
@@ -145,12 +115,27 @@ function updateQuizCountOptions() {
     }
   });
   
-  // 「全て」オプションを追加（選択数が10以下の場合のみ）
-  if (selectedCount <= 10) {
+  // 「全て」オプションを追加（選択数が100未満の場合）
+  if (selectedCount < 100) {
     const allOption = document.createElement('option');
     allOption.value = 'all';
     allOption.textContent = `全て（${selectedCount}問）`;
     quizCountSelect.appendChild(allOption);
+  }
+  
+  // デフォルト値を設定：10以下の最大数
+  const defaultValue = Math.min(selectedCount, 10);
+  
+  // デフォルト値が選択肢に存在するか確認
+  const availableOptions = Array.from(quizCountSelect.options).map(opt => opt.value);
+  if (availableOptions.includes(String(defaultValue))) {
+    quizCountSelect.value = defaultValue;
+    quizCount = defaultValue;
+  } else if (availableOptions.length > 0) {
+    // 存在しない場合は最後のオプションを選択
+    const lastOption = quizCountSelect.options[quizCountSelect.options.length - 1];
+    quizCountSelect.value = lastOption.value;
+    quizCount = lastOption.value === 'all' ? 9999 : parseInt(lastOption.value);
   }
 }
 
