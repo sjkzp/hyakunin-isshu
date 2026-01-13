@@ -379,11 +379,15 @@ function showNextButton(isCorrect) {
     existing.remove();
   }
   
+  // 最終問題かどうかを判定
+  const isLastQuestion = (index + 1) >= currentQuiz.length;
+  const buttonText = isLastQuestion ? '結果を見る ▶' : '次の問題へ ▶';
+  
   const buttonDiv = document.createElement('div');
   buttonDiv.id = 'correct-answer-display';
   buttonDiv.className = 'next-button-container';
   buttonDiv.innerHTML = `
-    <button class="next-question-btn ${isCorrect ? 'correct-style' : ''}" onclick="goToNextQuestion()">次の問題へ ▶</button>
+    <button class="next-question-btn ${isCorrect ? 'correct-style' : ''}" onclick="goToNextQuestion()">${buttonText}</button>
   `;
   
   // カードコンテナの後に挿入
@@ -401,13 +405,17 @@ function showCorrectAnswerWithButton(correctShimo) {
     existing.remove();
   }
   
+  // 最終問題かどうかを判定
+  const isLastQuestion = (index + 1) >= currentQuiz.length;
+  const buttonText = isLastQuestion ? '結果を見る ▶' : '次の問題へ ▶';
+  
   const answerDiv = document.createElement('div');
   answerDiv.id = 'correct-answer-display';
   answerDiv.className = 'correct-answer-display';
   answerDiv.innerHTML = `
     <div class="correct-label">正解</div>
     <div class="correct-shimo">${correctShimo}</div>
-    <button class="next-question-btn" onclick="goToNextQuestion()">次の問題へ ▶</button>
+    <button class="next-question-btn" onclick="goToNextQuestion()">${buttonText}</button>
   `;
   
   // カードコンテナの後に挿入
