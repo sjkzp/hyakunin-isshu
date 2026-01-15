@@ -16,6 +16,9 @@ let autoSpeakEnabled = true;
 let hintMode = 'toggle'; // 'toggle' or 'always'
 let quizCount = 10; // 出題件数
 
+// フィードバック表示用のタイマーID
+let feedbackTimer = null;
+
 // ローカルストレージから最高記録を読み込み
 window.addEventListener('load', () => {
   highScore = parseInt(localStorage.getItem('hyakunin-high-score') || '0');
@@ -435,20 +438,35 @@ function hideCorrectAnswer() {
 
 function showFeedback(text, type) {
   const feedback = document.getElementById('feedback');
-  feedback.textContent = text;
-  feedback.className = `feedback ${type}`;
   
-  // アニメーションをリセットするために一旦削除して再追加
-  feedback.style.animation = 'none';
-  feedback.offsetHeight; // リフロー強制
-  feedback.style.animation = '';
+  // 前回のタイマーをクリア
+  if (feedbackTimer !== null) {
+    clearTimeout(feedbackTimer);
+    feedbackTimer = null;
+  }
   
-  // hiddenクラスを削除して表示（不要だが念のため）
-  feedback.classList.remove('hidden');
+  // 一旦hiddenクラスを追加してリセット
+  feedback.classList.add('hidden');
   
-  setTimeout(() => {
-    feedback.classList.add('hidden');
-  }, 1200); // アニメーション時間と同じ
+  // 次のフレームで表示を開始（アニメーションをリセット）
+  requestAnimationFrame(() => {
+    feedback.textContent = text;
+    feedback.className = `feedback ${type}`;
+    
+    // アニメーションをリセットするために一旦削除して再追加
+    feedback.style.animation = 'none';
+    feedback.offsetHeight; // リフロー強制
+    feedback.style.animation = '';
+    
+    // hiddenクラスを削除して表示
+    feedback.classList.remove('hidden');
+    
+    // 新しいタイマーを設定
+    feedbackTimer = setTimeout(() => {
+      feedback.classList.add('hidden');
+      feedbackTimer = null;
+    }, 1200); // アニメーション時間と同じ
+  });
 }
 
 function playSound(type) {
