@@ -19,6 +19,9 @@ let quizCount = 10; // 出題件数
 // フィードバック表示用のタイマーID
 let feedbackTimer = null;
 
+// 現在の問題で既に不正解したかどうか
+let hasWrongAnswerInCurrentQuestion = false;
+
 // ローカルストレージから最高記録を読み込み
 window.addEventListener('load', () => {
   highScore = parseInt(localStorage.getItem('hyakunin-high-score') || '0');
@@ -173,6 +176,7 @@ function startGame() {
   combo = 0;
   maxCombo = 0;
   currentQuiz = [];
+  hasWrongAnswerInCurrentQuestion = false;
   
   // チェックされた歌だけ抽出（0首の場合は全100首を対象）
   if (selected.length > 0) {
@@ -222,6 +226,9 @@ function showQuiz() {
   }
 
   const q = currentQuiz[index];
+  
+  // 新しい問題なので不正解フラグをリセット
+  hasWrongAnswerInCurrentQuestion = false;
   
   // カード番号を表示
   document.getElementById("card-number").textContent = `第${q.id}首`;
@@ -348,7 +355,11 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     showNextButton(true);
   } else {
     // 不正解時は選択したボタンのみをグレーアウト（再選択可能）
-    wrong++;
+    // 不正解カウントは1問につき1回のみ
+    if (!hasWrongAnswerInCurrentQuestion) {
+      wrong++;
+      hasWrongAnswerInCurrentQuestion = true;
+    }
     combo = 0;
     
     // 選択したボタンをグレーアウトして無効化
