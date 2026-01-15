@@ -312,13 +312,13 @@ function createRubyText(kanji, yomi) {
 }
 
 function answer(isCorrect, selectedButton, correctAnswer) {
-  // 選択肢ボタンを無効化
-  const choiceButtons = document.querySelectorAll('#choices button');
-  choiceButtons.forEach(btn => btn.disabled = true);
-  
   const q = currentQuiz[index];
   
   if (isCorrect) {
+    // 選択肢ボタンを無効化
+    const choiceButtons = document.querySelectorAll('#choices button');
+    choiceButtons.forEach(btn => btn.disabled = true);
+    
     correct++;
     combo++;
     if (combo > maxCombo) maxCombo = combo;
@@ -344,26 +344,21 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     // 正解時も次へボタンを表示
     showNextButton(true);
   } else {
+    // 不正解時は選択したボタンのみをグレーアウト（再選択可能）
     wrong++;
     combo = 0;
     
-    // 選択したボタンを不正解色に
+    // 選択したボタンをグレーアウトして無効化
     selectedButton.classList.add('selected-wrong');
+    selectedButton.disabled = true;
     
     showFeedback('❌ 残念', 'wrong');
     if (soundEnabled) playSound('wrong');
     
     document.querySelector('.combo-box').classList.remove('active');
     
-    // 不正解時も下の句を読み上げ
-    if (autoSpeakEnabled) {
-      setTimeout(() => {
-        speakShimo(q.shimo);
-      }, 400);
-    }
-    
-    // カードの下に正解と次へボタンを表示
-    showCorrectAnswerWithButton(q.shimo);
+    // 不正解時は正解を表示せず、再選択を促す
+    // 下の句の読み上げもしない
   }
 
   updateStats();

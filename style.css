@@ -434,11 +434,13 @@ body {
 
 /* 不正解を選んだ時のハイライト */
 .choices-container button.selected-wrong {
-  background: linear-gradient(135deg, #708090 0%, #556677 100%);
-  border-color: #708090;
-  color: white;
+  background: linear-gradient(135deg, #999 0%, #777 100%);
+  border-color: #999;
+  color: #ccc;
   transform: scale(0.95);
-  box-shadow: 0 4px 10px rgba(112, 128, 144, 0.5);
+  box-shadow: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .quit-btn {
