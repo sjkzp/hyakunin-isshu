@@ -329,9 +329,15 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     const choiceButtons = document.querySelectorAll('#choices button');
     choiceButtons.forEach(btn => btn.disabled = true);
     
-    correct++;
-    combo++;
-    if (combo > maxCombo) maxCombo = combo;
+    // 一度も不正解していない場合のみ正解数をカウント
+    if (!hasWrongAnswerInCurrentQuestion) {
+      correct++;
+      combo++;
+      if (combo > maxCombo) maxCombo = combo;
+    } else {
+      // 不正解後の正解なのでコンボはリセット済み（維持）
+      combo = 0;
+    }
     
     // 選択したボタンを正解色に
     selectedButton.classList.add('selected-correct');
@@ -342,6 +348,8 @@ function answer(isCorrect, selectedButton, correctAnswer) {
     // コンボが3以上の時は炎エフェクト
     if (combo >= 3) {
       document.querySelector('.combo-box').classList.add('active');
+    } else {
+      document.querySelector('.combo-box').classList.remove('active');
     }
     
     // 正解時も下の句を読み上げ
