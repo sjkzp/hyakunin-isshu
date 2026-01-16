@@ -22,6 +22,28 @@ let feedbackTimer = null;
 // 現在の問題で既に不正解したかどうか
 let hasWrongAnswerInCurrentQuestion = false;
 
+// デフォルト選択パターン
+const defaultPatterns = [
+  {
+    name: "🔰 初級編（1-20首）",
+    selected: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+    quizCount: 10,
+    isDefault: true
+  },
+  {
+    name: "⭐ むすめふさほせ（一字決まり）",
+    selected: [87, 18, 57, 22, 70, 81, 77],
+    quizCount: 7,
+    isDefault: true
+  },
+  {
+    name: "📚 有名な歌トップ10",
+    selected: [1,2,4,7,15,17,35,77,96,100],
+    quizCount: 10,
+    isDefault: true
+  }
+];
+
 // ローカルストレージから最高記録を読み込み
 window.addEventListener('load', () => {
   highScore = parseInt(localStorage.getItem('hyakunin-high-score') || '0');
@@ -30,6 +52,7 @@ window.addEventListener('load', () => {
   loadSettings();
   loadSelectedSongs();  // 選択された歌を読み込む
   updateQuizCountOptions(); // 出題件数の選択肢を初期化
+  initializeDefaultPatterns(); // デフォルトパターンを初期化
   
   // 設定変更時に自動保存（要素が存在する場合のみ）
   const soundCheckbox = document.getElementById('sound-enabled');
@@ -586,6 +609,7 @@ function showList() {
   });
   
   updateSelectedCount();
+  loadSavedPatterns(); // 保存済みパターンをプルダウンに表示
 }
 
 // カテゴリ全体を選択
@@ -936,10 +960,13 @@ function shuffle(arr) {
 
 // localStorageを初期化する関数
 function resetAllData() {
-  if (confirm('本当にすべてのデータを初期化しますか？\n\n・最高記録\n・設定内容\n・選択した歌\n\nすべてがリセットされます。')) {
+  if (confirm('本当にすべてのデータを初期化しますか？\n\n・最高記録\n・設定内容\n・選択した歌\n・保存した選択パターン\n\nすべてがリセットされます。')) {
     if (confirm('最終確認：本当に初期化しますか？\nこの操作は取り消せません。')) {
       // localStorageをすべてクリア
       localStorage.clear();
+      
+      // デフォルトパターンを復元
+      localStorage.setItem('hyakunin-patterns', JSON.stringify(defaultPatterns));
       
       // グローバル変数をデフォルトに戻す
       selected = [1,2,3,4,5,6,7,8,9,10];
@@ -969,4 +996,256 @@ function resetAllData() {
       backToTitle();
     }
   }
+}
+
+// ========================================
+// 選択パターンの保存・読み込み機能
+// ========================================
+
+// 保存済みパターンをプルダウンに表示
+// デフォルトパターンを初期化
+function initializeDefaultPatterns() {
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  
+  // デフォルトパターンが既に存在するかチェック
+  const hasDefaultPatterns = patterns.some(p => p.isDefault);
+  
+  if (!hasDefaultPatterns) {
+    // デフォルトパターンを先頭に追加
+    const newPatterns = [...defaultPatterns, ...patterns];
+    localStorage.setItem('hyakunin-patterns', JSON.stringify(newPatterns));
+  }
+}
+
+// 保存済みパターンをプルダウンに表示
+function loadSavedPatterns() {
+  const select = document.getElementById('pattern-select');
+  if (!select) return;
+  
+  // 既存のオプションをクリア（最初のデフォルトオプション以外）
+  select.innerHTML = '<option value="">保存済みパターンを選択</option>';
+  
+  // localStorageから保存済みパターンを取得
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  
+  // プルダウンに追加
+  patterns.forEach((pattern, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    // デフォルトパターンには名前をそのまま、ユーザーパターンには首数を追加
+    if (pattern.isDefault) {
+      option.textContent = pattern.name;
+    } else {
+      option.textContent = `${pattern.name} (${pattern.selected.length}首)`;
+    }
+    select.appendChild(option);
+  });
+}
+
+// 選択パターンを保存
+function savePattern() {
+  // 既存のパターンを取得
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  
+  // デフォルト名を生成（選択1、選択2...）
+  let defaultName = '';
+  let counter = 1;
+  while (true) {
+    defaultName = `選択${counter}`;
+    // 同名が存在しない場合はこの名前を使用
+    if (!patterns.find(p => p.name === defaultName)) {
+      break;
+    }
+    counter++;
+  }
+  
+  // 保存名を入力
+  const name = prompt('選択パターンの名前を入力してください：', defaultName);
+  
+  if (name === null) {
+    return; // キャンセル
+  }
+  
+  if (name.trim() === '') {
+    alert('名前を入力してください。');
+    return;
+  }
+  
+  // 現在の選択状態を保存
+  const pattern = {
+    name: name.trim(),
+    selected: [...selected],
+    quizCount: quizCount,
+    timestamp: new Date().toISOString()
+  };
+  
+  // 同名のパターンがあるか確認
+  const existingIndex = patterns.findIndex(p => p.name === pattern.name);
+  
+  if (existingIndex >= 0) {
+    // 上書き確認
+    if (confirm(`「${pattern.name}」は既に存在します。上書きしますか？`)) {
+      patterns[existingIndex] = pattern;
+    } else {
+      return;
+    }
+  } else {
+    // 新規追加
+    patterns.push(pattern);
+  }
+  
+  // localStorageに保存
+  localStorage.setItem('hyakunin-patterns', JSON.stringify(patterns));
+  
+  alert(`「${pattern.name}」を保存しました。`);
+  
+  // プルダウンを更新
+  loadSavedPatterns();
+}
+
+// 選択パターンを読み込み
+function loadPattern() {
+  const select = document.getElementById('pattern-select');
+  const selectedIndex = select.value;
+  
+  if (selectedIndex === '') {
+    alert('読み込むパターンを選択してください。');
+    return;
+  }
+  
+  // パターンを取得
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  const pattern = patterns[parseInt(selectedIndex)];
+  
+  if (!pattern) {
+    alert('パターンが見つかりません。');
+    return;
+  }
+  
+  // 選択状態を復元
+  selected = [...pattern.selected];
+  
+  // 出題件数も復元
+  if (pattern.quizCount !== undefined) {
+    quizCount = pattern.quizCount;
+  }
+  
+  // localStorageに保存
+  saveSelectedSongs();
+  saveSettings();
+  
+  // 一覧を再描画
+  showList();
+  
+  // 出題件数の選択肢を更新
+  updateQuizCountOptions();
+  
+  alert(`「${pattern.name}」を読み込みました。`);
+}
+
+// 選択パターンを削除
+// 選択パターンの名前を変更
+function renamePattern() {
+  const select = document.getElementById('pattern-select');
+  const selectedIndex = select.value;
+  
+  if (selectedIndex === '') {
+    alert('名前を変更するパターンを選択してください。');
+    return;
+  }
+  
+  // パターンを取得
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  const pattern = patterns[parseInt(selectedIndex)];
+  
+  if (!pattern) {
+    alert('パターンが見つかりません。');
+    return;
+  }
+  
+  // デフォルトパターンは編集不可
+  if (pattern.isDefault) {
+    alert('このパターンの名前は変更できません。');
+    return;
+  }
+  
+  // 新しい名前を入力
+  const newName = prompt('新しい名前を入力してください：', pattern.name);
+  
+  if (newName === null) {
+    return; // キャンセル
+  }
+  
+  if (newName.trim() === '') {
+    alert('名前を入力してください。');
+    return;
+  }
+  
+  // 同名のパターンがあるか確認（自分自身以外）
+  const duplicateIndex = patterns.findIndex((p, index) => 
+    p.name === newName.trim() && index !== parseInt(selectedIndex)
+  );
+  
+  if (duplicateIndex >= 0) {
+    alert(`「${newName.trim()}」は既に存在します。別の名前を入力してください。`);
+    return;
+  }
+  
+  // 名前を変更
+  const oldName = pattern.name;
+  pattern.name = newName.trim();
+  patterns[parseInt(selectedIndex)] = pattern;
+  
+  // localStorageに保存
+  localStorage.setItem('hyakunin-patterns', JSON.stringify(patterns));
+  
+  alert(`「${oldName}」を「${pattern.name}」に変更しました。`);
+  
+  // プルダウンを更新
+  loadSavedPatterns();
+  
+  // 変更したパターンを選択状態に保つ
+  select.value = selectedIndex;
+}
+
+// 選択パターンを削除
+function deletePattern() {
+  const select = document.getElementById('pattern-select');
+  const selectedIndex = select.value;
+  
+  if (selectedIndex === '') {
+    alert('削除するパターンを選択してください。');
+    return;
+  }
+  
+  // パターンを取得
+  const patterns = JSON.parse(localStorage.getItem('hyakunin-patterns') || '[]');
+  const pattern = patterns[parseInt(selectedIndex)];
+  
+  if (!pattern) {
+    alert('パターンが見つかりません。');
+    return;
+  }
+  
+  // デフォルトパターンは削除不可
+  if (pattern.isDefault) {
+    alert('このパターンは削除できません。');
+    return;
+  }
+  
+  // 削除確認
+  if (!confirm(`「${pattern.name}」を削除しますか？`)) {
+    return;
+  }
+  
+  // パターンを削除
+  patterns.splice(parseInt(selectedIndex), 1);
+  
+  // localStorageに保存
+  localStorage.setItem('hyakunin-patterns', JSON.stringify(patterns));
+  
+  alert(`「${pattern.name}」を削除しました。`);
+  
+  // プルダウンを更新
+  loadSavedPatterns();
 }

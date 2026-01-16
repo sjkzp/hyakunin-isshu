@@ -179,9 +179,22 @@
       <span class="selected-count">選択中：<span id="selected-count">0</span>首</span>
     </div>
     
+    <!-- 選択パターンの読み込み -->
+    <div class="pattern-load-section">
+      <select id="pattern-select" class="pattern-select">
+        <option value="">保存済みパターンを選択</option>
+      </select>
+      <button class="btn-pattern-load" onclick="loadPattern()">読み込み</button>
+      <button class="btn-pattern-rename" onclick="renamePattern()">名前変更</button>
+      <button class="btn-pattern-delete" onclick="deletePattern()">削除</button>
+    </div>
+    
     <div id="list-container" class="list-container"></div>
     
-    <button class="btn-back" onclick="backToTitle()">戻る</button>
+    <div class="list-footer-buttons">
+      <button class="btn-back" onclick="backToTitle()">戻る</button>
+      <button class="btn-save-pattern" onclick="savePattern()">選択を保存</button>
+    </div>
   </div>
 </div>
 

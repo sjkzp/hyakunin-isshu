@@ -921,6 +921,103 @@ body {
   box-shadow: 0 8px 20px rgba(112, 128, 144, 0.4);
 }
 
+/* 選択パターン保存・読み込み */
+.pattern-load-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pattern-select {
+  flex: 1;
+  max-width: 300px;
+  padding: 10px 15px;
+  border: 2px solid #daa520;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Noto Serif JP', serif;
+  background: white;
+  cursor: pointer;
+}
+
+.btn-pattern-load,
+.btn-pattern-rename,
+.btn-pattern-delete {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Noto Serif JP', serif;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-pattern-load {
+  background: linear-gradient(135deg, #4169e1 0%, #1e3a8a 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(65, 105, 225, 0.3);
+}
+
+.btn-pattern-load:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(65, 105, 225, 0.4);
+}
+
+.btn-pattern-rename {
+  background: linear-gradient(135deg, #4169e1 0%, #1e3a8a 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(65, 105, 225, 0.3);
+}
+
+.btn-pattern-rename:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(65, 105, 225, 0.4);
+}
+
+.btn-pattern-delete {
+  background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(220, 20, 60, 0.3);
+}
+
+.btn-pattern-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
+}
+
+.btn-save-pattern {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #228b22 0%, #006400 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: 'Noto Serif JP', serif;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(34, 139, 34, 0.3);
+  font-weight: 600;
+}
+
+.btn-save-pattern:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(34, 139, 34, 0.4);
+}
+
+.list-footer-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 /* 設定画面フッター */
 .settings-footer {
   margin-top: 20px;
