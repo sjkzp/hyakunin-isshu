@@ -22,6 +22,9 @@ let feedbackTimer = null;
 // 現在の問題で既に不正解したかどうか
 let hasWrongAnswerInCurrentQuestion = false;
 
+// 選択パターン保存ボタンの有効化用
+let initialSelected = [...selected]; // 初期選択状態を保存
+
 // デフォルト選択パターン
 const defaultPatterns = [
   {
@@ -610,6 +613,7 @@ function showList() {
   
   updateSelectedCount();
   loadSavedPatterns(); // 保存済みパターンをプルダウンに表示
+  updateSaveButtonState(); // 保存ボタンの状態を更新
 }
 
 // カテゴリ全体を選択
@@ -641,6 +645,7 @@ function toggleSelect(id, checked) {
   saveSelectedSongs();  // 選択を保存
   updateSelectedCount();
   updateQuizCountOptions(); // 出題件数の選択肢を更新
+  updateSaveButtonState(); // 保存ボタンの状態を更新
 }
 
 // 選択された歌を保存
@@ -1097,6 +1102,10 @@ function savePattern() {
   // localStorageに保存
   localStorage.setItem('hyakunin-patterns', JSON.stringify(patterns));
   
+  // 保存成功したら初期選択状態を更新
+  initialSelected = [...selected];
+  updateSaveButtonState();
+  
   alert(`「${pattern.name}」を保存しました。`);
   
   // プルダウンを更新
@@ -1124,6 +1133,7 @@ function loadPattern() {
   
   // 選択状態を復元
   selected = [...pattern.selected];
+  initialSelected = [...pattern.selected]; // 初期選択状態も更新
   
   // 出題件数も復元
   if (pattern.quizCount !== undefined) {
@@ -1248,4 +1258,46 @@ function deletePattern() {
   
   // プルダウンを更新
   loadSavedPatterns();
+}
+
+// ========================================
+// 選択パターン保存ボタンの有効化制御
+// ========================================
+
+// 選択が初期状態から変更されたかチェック
+function hasSelectionChanged() {
+  // 長さが違う場合は変更あり
+  if (selected.length !== initialSelected.length) {
+    return true;
+  }
+  
+  // ソートして比較
+  const sortedSelected = [...selected].sort((a, b) => a - b);
+  const sortedInitial = [...initialSelected].sort((a, b) => a - b);
+  
+  for (let i = 0; i < sortedSelected.length; i++) {
+    if (sortedSelected[i] !== sortedInitial[i]) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+// 保存ボタンの有効/無効を更新
+function updateSaveButtonState() {
+  const saveButton = document.querySelector('.btn-save-pattern');
+  if (!saveButton) return;
+  
+  const hasChanged = hasSelectionChanged();
+  saveButton.disabled = !hasChanged;
+  
+  // 無効時のスタイル
+  if (!hasChanged) {
+    saveButton.style.opacity = '0.5';
+    saveButton.style.cursor = 'not-allowed';
+  } else {
+    saveButton.style.opacity = '1';
+    saveButton.style.cursor = 'pointer';
+  }
 }
