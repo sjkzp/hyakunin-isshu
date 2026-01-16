@@ -1127,6 +1127,28 @@ body {
     transform: scale(0.98);
   }
   
+  /* パターン保存・読み込みセクション（スマホ対応） */
+  .pattern-load-section {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+  }
+  
+  .pattern-select {
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+  
+  .btn-pattern-load,
+  .btn-pattern-rename,
+  .btn-pattern-delete {
+    width: 100%;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  
   /* 各種ボタンのhover効果も無効化 */
   .speak-btn:hover,
   .hint-btn:hover,
