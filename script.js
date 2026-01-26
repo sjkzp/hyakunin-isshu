@@ -1135,6 +1135,9 @@ function loadPattern() {
   selected = [...pattern.selected];
   initialSelected = [...pattern.selected]; // 初期選択状態も更新
   
+  console.log('パターン読み込み:', pattern.name);
+  console.log('選択された歌:', selected);
+  
   // 出題件数も復元
   if (pattern.quizCount !== undefined) {
     quizCount = pattern.quizCount;
@@ -1144,24 +1147,10 @@ function loadPattern() {
   saveSelectedSongs();
   saveSettings();
   
-  // 一覧を再描画
+  // 一覧を再描画（この時点でselectedの状態が反映される）
   showList();
   
-  // チェックボックスの状態を明示的に更新（念のため）
-  try {
-    document.querySelectorAll('.list-item input[type="checkbox"]').forEach(checkbox => {
-      const onchangeAttr = checkbox.getAttribute('onchange');
-      if (onchangeAttr) {
-        const match = onchangeAttr.match(/\d+/);
-        if (match) {
-          const id = parseInt(match[0]);
-          checkbox.checked = selected.includes(id);
-        }
-      }
-    });
-  } catch (e) {
-    console.log('チェックボックス更新エラー:', e);
-  }
+  console.log('showList実行後のチェックボックス数:', document.querySelectorAll('.list-item input[type="checkbox"]:checked').length);
   
   // 出題件数の選択肢を更新
   updateQuizCountOptions();
