@@ -1147,6 +1147,12 @@ function loadPattern() {
   // 一覧を再描画
   showList();
   
+  // チェックボックスの状態を明示的に更新（念のため）
+  document.querySelectorAll('.list-item input[type="checkbox"]').forEach(checkbox => {
+    const id = parseInt(checkbox.getAttribute('onchange').match(/\d+/)[0]);
+    checkbox.checked = selected.includes(id);
+  });
+  
   // 出題件数の選択肢を更新
   updateQuizCountOptions();
   
