@@ -1148,10 +1148,20 @@ function loadPattern() {
   showList();
   
   // チェックボックスの状態を明示的に更新（念のため）
-  document.querySelectorAll('.list-item input[type="checkbox"]').forEach(checkbox => {
-    const id = parseInt(checkbox.getAttribute('onchange').match(/\d+/)[0]);
-    checkbox.checked = selected.includes(id);
-  });
+  try {
+    document.querySelectorAll('.list-item input[type="checkbox"]').forEach(checkbox => {
+      const onchangeAttr = checkbox.getAttribute('onchange');
+      if (onchangeAttr) {
+        const match = onchangeAttr.match(/\d+/);
+        if (match) {
+          const id = parseInt(match[0]);
+          checkbox.checked = selected.includes(id);
+        }
+      }
+    });
+  } catch (e) {
+    console.log('チェックボックス更新エラー:', e);
+  }
   
   // 出題件数の選択肢を更新
   updateQuizCountOptions();
