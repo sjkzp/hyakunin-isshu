@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>季節別・百人一首の歌｜春夏秋冬の美しい和歌を楽しむ | クイズで暗記【百人一首】</title>
+<meta name="description" content="百人一首を季節別に紹介。春の桜、夏の夕暮れ、秋の紅葉、冬の雪景色など、四季折々の美しい情景を詠んだ和歌を楽しめます。">
+<link rel="stylesheet" href="style.css">
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VKDQQ7HTJ0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VKDQQ7HTJ0');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1101812678335798"
+     crossorigin="anonymous"></script>
+
+<style>
+  .article-page {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  
+  .article-page h1 {
+    font-size: 2rem;
+    color: #8b4513;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .article-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #daa520;
+  }
+  
+  .article-page h2 {
+    font-size: 1.5rem;
+    color: #8b4513;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-left: 5px solid #daa520;
+    padding-left: 15px;
+  }
+  
+  .article-page h3 {
+    font-size: 1.2rem;
+    color: #654321;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  
+  .article-page p {
+    line-height: 2;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+  
+  .article-page ul, .article-page ol {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    line-height: 2;
+  }
+  
+  .article-page li {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .season-box {
+    background: linear-gradient(135deg, #fff9e6 0%, #fffaf0 100%);
+    border: 3px solid #daa520;
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 12px;
+  }
+  
+  .season-box.spring {
+    background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 100%);
+    border-color: #ffb7d5;
+  }
+  
+  .season-box.summer {
+    background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+    border-color: #87ceeb;
+  }
+  
+  .season-box.autumn {
+    background: linear-gradient(135deg, #fff0e6 0%, #fff5ee 100%);
+    border-color: #daa520;
+  }
+  
+  .season-box.winter {
+    background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
+    border-color: #b0c4de;
+  }
+  
+  .poem-original {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #8b4513;
+    margin-bottom: 15px;
+    line-height: 1.8;
+  }
+  
+  .poem-translation {
+    color: #555;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    border-left: 3px solid #daa520;
+  }
+  
+  .poem-author {
+    text-align: right;
+    color: #8b4513;
+    font-weight: 600;
+    margin-top: 15px;
+  }
+  
+  .season-count {
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-weight: 600;
+    color: #8b4513;
+  }
+  
+  .cta-box {
+    background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
+    color: white;
+    padding: 30px;
+    margin: 40px 0;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .cta-box h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .cta-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: white;
+    color: #8b4513;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .related-links {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #daa520;
+  }
+  
+  .related-links h3 {
+    font-size: 1.3rem;
+    color: #8b4513;
+    margin-bottom: 20px;
+  }
+  
+  .related-link {
+    display: block;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    color: #8b4513;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .related-link:hover {
+    background: linear-gradient(135deg, #fff9e6 0%, #fffaf0 100%);
+    transform: translateX(5px);
+  }
+</style>
+</head>
+<body style="background: linear-gradient(135deg, #f5e6d3 0%, #e8d4c0 100%); min-height: 100vh;">
+
+<div class="article-page">
+  <h1>季節別・百人一首の歌｜春夏秋冬の美しい和歌を楽しむ</h1>
+  
+  <div class="article-meta">
+    <time datetime="2026-02-03">2026年2月3日</time> ｜ カテゴリー：和歌紹介
+  </div>
+  
+  <p>百人一首には、日本の美しい四季を詠んだ歌が32首含まれています。春の桜、夏の蝉しぐれ、秋の紅葉、冬の雪景色など、季節の移ろいを繊細に捉えた和歌は、日本人の自然観を今に伝えています。</p>
+  
+  <p>この記事では、百人一首を季節ごとに分類し、それぞれの季節を代表する美しい歌を紹介します。四季折々の情景を楽しみながら、和歌の世界を味わいましょう。</p>
+  
+  <h2>百人一首の季節構成</h2>
+  
+  <p>百人一首に含まれる四季の歌の内訳は以下の通りです：</p>
+  
+  <ul>
+    <li><strong>春の歌：</strong>6首</li>
+    <li><strong>夏の歌：</strong>4首</li>
+    <li><strong>秋の歌：</strong>16首（最多）</li>
+    <li><strong>冬の歌：</strong>6首</li>
+  </ul>
+  
+  <p>秋の歌が最も多いのは、平安貴族が秋を最も風雅な季節として愛したためです。紅葉や虫の声、月など、秋ならではの情景が多く詠まれています。</p>
+  
+  <h2>🌸 春の歌（6首）</h2>
+  
+  <p>春の歌は、桜や若菜など、生命の息吹を感じさせる題材が中心です。新しい季節の訪れを喜ぶ明るい雰囲気の歌が多いのが特徴です。</p>
+  
+  <div class="season-box spring">
+    <div class="poem-original">
+      春過ぎて　夏来にけらし　白妙の<br>
+      衣干すてふ　天の香具山
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      春が過ぎて夏が来たようだ。真っ白な衣を干すという天の香具山に、夏の衣が干してあるのが見える
+    </div>
+    <div class="poem-author">持統天皇（第2番）</div>
+  </div>
+  
+  <p>この歌は春から夏への季節の移り変わりを詠んでいます。「白妙の衣」という清涼感のある表現が、初夏の爽やかさを感じさせます。</p>
+  
+  <div class="season-box spring">
+    <div class="poem-original">
+      君がため　春の野に出でて　若菜摘む<br>
+      わが衣手に　雪は降りつつ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      あなたのために春の野原に出て若菜を摘んでいると、私の袖に雪が降りかかってくる
+    </div>
+    <div class="poem-author">光孝天皇（第15番）</div>
+  </div>
+  
+  <p>早春の野で若菜を摘む風習を詠んだ歌です。まだ雪が残る季節に、愛する人のために野に出る優しさが伝わってきます。</p>
+  
+  <div class="season-box spring">
+    <div class="poem-original">
+      久方の　光のどけき　春の日に<br>
+      しづ心なく　花の散るらむ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      日の光がのどかに降り注ぐ春の日に、どうして桜の花は落ち着きなく散っていくのだろう
+    </div>
+    <div class="poem-author">紀友則（第33番）</div>
+  </div>
+  
+  <p>のどかな春の日差しと、散りゆく桜の対比が美しい歌です。桜の儚さと春の穏やかさが同時に表現されています。</p>
+  
+  <h2>☀️ 夏の歌（4首）</h2>
+  
+  <p>夏の歌は春・秋に比べて少ないですが、夕暮れの涼しさや夏の夜の情景など、暑さを避けた時間帯を詠んだ歌が特徴的です。</p>
+  
+  <div class="season-box summer">
+    <div class="poem-original">
+      夏の夜は　まだ宵ながら　明けぬるを<br>
+      雲のいづこに　月宿るらむ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      夏の夜はまだ宵の口だというのに明けてしまった。月はどこの雲に宿っているのだろうか
+    </div>
+    <div class="poem-author">清原深養父（第36番）</div>
+  </div>
+  
+  <p>夏の夜の短さを詠んだ歌です。あっという間に夜が明けてしまう夏至の頃の情景が目に浮かびます。</p>
+  
+  <div class="season-box summer">
+    <div class="poem-original">
+      瀬をはやみ　岩にせかるる　滝川の<br>
+      われても末に　逢はむとぞ思ふ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      川の瀬が速いので岩にせき止められる急流が、分かれてもまた一つになるように、今は離れていてもいつかは逢おうと思う
+    </div>
+    <div class="poem-author">崇徳院（第77番）</div>
+  </div>
+  
+  <p>夏の激しい川の流れを恋の歌に重ねた名歌です。自然の力強さと、再会への思いが表現されています。</p>
+  
+  <div class="cta-box">
+    <h3>四季の歌をクイズで覚えよう！</h3>
+    <p style="color: white;">季節ごとに歌を覚えると、情景がイメージしやすくなります</p>
+    <a href="index.html" class="cta-btn">無料でクイズに挑戦</a>
+  </div>
+  
+  <h2>🍁 秋の歌（16首）</h2>
+  
+  <p>百人一首で最も多いのが秋の歌です。紅葉、月、虫の声、露など、秋ならではの風物詩を詠んだ歌が豊富に収録されています。</p>
+  
+  <div class="season-box autumn">
+    <div class="poem-original">
+      秋の田の　かりほの庵の　苫をあらみ<br>
+      わが衣手は　露にぬれつつ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      秋の田んぼの仮小屋の屋根を葺いた苫の目が粗いので、私の袖は夜露に濡れ続けている
+    </div>
+    <div class="poem-author">天智天皇（第1番）</div>
+  </div>
+  
+  <p>百人一首の冒頭を飾る名歌です。秋の収穫期の様子と、露に濡れる袖という情景が印象的です。</p>
+  
+  <div class="season-box autumn">
+    <div class="poem-original">
+      ちはやぶる　神代も聞かず　竜田川<br>
+      からくれなゐに　水くくるとは
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      神々の時代にも聞いたことがない。竜田川の水が、紅葉で真紅に染まるとは
+    </div>
+    <div class="poem-author">在原業平（第17番）</div>
+  </div>
+  
+  <p>紅葉の美しさを詠んだ名歌です。「からくれなゐ」という鮮やかな色彩表現が、竜田川の絶景を伝えています。</p>
+  
+  <div class="season-box autumn">
+    <div class="poem-original">
+      奥山に　紅葉踏み分け　鳴く鹿の<br>
+      声聞く時ぞ　秋は悲しき
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      奥深い山で、紅葉を踏み分けながら鳴く鹿の声を聞く時こそ、秋は悲しく感じられる
+    </div>
+    <div class="poem-author">猿丸大夫（第5番）</div>
+  </div>
+  
+  <p>視覚（紅葉）と聴覚（鹿の声）の両方で秋を表現した名歌です。「秋は悲しき」という結びが、日本人の秋への感性を表しています。</p>
+  
+  <div class="season-box autumn">
+    <div class="poem-original">
+      心あてに　をらばや折らむ　初霜の<br>
+      置きまどはせる　白菊の花
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      あてずっぽうに折ろうか。初霜が降りて見分けがつかなくなった白菊の花を
+    </div>
+    <div class="poem-author">凡河内躬恒（第29番）</div>
+  </div>
+  
+  <p>白菊と初霜の白さが区別できない様子を詠んだ歌です。晩秋の情景が美しく表現されています。</p>
+  
+  <h2>❄️ 冬の歌（6首）</h2>
+  
+  <p>冬の歌は、雪や霜、寒さなど、厳しい季節の情景を詠んだものが中心です。静謐で凛とした美しさが特徴です。</p>
+  
+  <div class="season-box winter">
+    <div class="poem-original">
+      田子の浦に　うち出でて見れば　白妙の<br>
+      富士の高嶺に　雪は降りつつ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      田子の浦に出て眺めると、真っ白な富士山の高い峰に雪が降り続いている
+    </div>
+    <div class="poem-author">山部赤人（第4番）</div>
+  </div>
+  
+  <p>雪を頂く富士山を詠んだ名歌です。「白妙の」という美しい表現で、冬の富士山の荘厳さが伝わってきます。</p>
+  
+  <div class="season-box winter">
+    <div class="poem-original">
+      白鳥は　哀しからずや　空の青<br>
+      海のあをにも　染まずただよふ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      白鳥は悲しくないだろうか。空の青にも海の青にも染まらず、ただ漂っている
+    </div>
+    <div class="poem-author">大伴家持（第6番）</div>
+  </div>
+  
+  <p>※この歌は厳密には冬の歌ではありませんが、白鳥という冬の季語を含むため、冬の情景として解釈されることもあります。</p>
+  
+  <div class="season-box winter">
+    <div class="poem-original">
+      村雨の　露もまだひぬ　まきの葉に<br>
+      霧立ちのぼる　秋の夕暮れ
+    </div>
+    <div class="poem-translation">
+      <strong>【現代語訳】</strong><br>
+      通り雨の露もまだ乾かない槙の葉に、霧が立ち上る秋の夕暮れ
+    </div>
+    <div class="poem-author">寂蓮法師（第87番）</div>
+  </div>
+  
+  <p>晩秋から初冬への季節の変わり目を詠んだ歌です。霧が立ち上る幽玄な情景が美しく描かれています。</p>
+  
+  <h2>季節の歌を楽しむポイント</h2>
+  
+  <h3>1. 情景をイメージする</h3>
+  <p>歌に詠まれた風景を頭の中で思い描きながら読むと、より深く味わえます。春の桜、秋の紅葉など、実際の季節に合わせて歌を読むのもおすすめです。</p>
+  
+  <h3>2. 季語に注目する</h3>
+  <p>「花」は春（桜）、「月」は秋、「雪」は冬を表す季語です。季語を知ることで、歌の季節がわかりやすくなります。</p>
+  
+  <h3>3. 五感で感じる</h3>
+  <p>視覚（色彩）、聴覚（鳥や虫の声）、触覚（露や雪）など、五感で季節を捉えた表現に注目しましょう。</p>
+  
+  <h3>4. 現代の季節感と比較する</h3>
+  <p>平安時代と現代では季節感が異なる部分もあります。旧暦と新暦の違いにも注目すると面白いです。</p>
+  
+  <h2>まとめ：四季を通じて百人一首を楽しもう</h2>
+  
+  <p>百人一首の季節の歌は、日本人の繊細な自然観を今に伝えています。春夏秋冬それぞれの美しさを、和歌を通じて味わうことができます。</p>
+  
+  <p><strong>季節の歌を学ぶメリット：</strong></p>
+  
+  <ul>
+    <li><strong>情景がイメージしやすい：</strong>視覚的な要素が多いため、記憶に残りやすい</li>
+    <li><strong>日本の美意識を学べる：</strong>平安貴族の自然観や美意識を理解できる</li>
+    <li><strong>季節ごとに楽しめる：</strong>実際の季節に合わせて歌を味わう楽しみがある</li>
+    <li><strong>俳句や短歌への理解：</strong>現代の季語の基礎を知ることができる</li>
+  </ul>
+  
+  <p>当サイトのクイズで、四季折々の美しい歌を楽しみながら覚えていきましょう。季節の移ろいとともに、百人一首の世界がより深く味わえるはずです。</p>
+  
+  <div class="related-links">
+    <h3>関連記事</h3>
+    <a href="blog-famous-poems.html" class="related-link">🌸 百人一首の有名な歌10選</a>
+    <a href="about.html" class="related-link">📖 百人一首とは - 歴史と魅力を知る</a>
+    <a href="index.html" class="related-link">🎯 クイズに挑戦 - 今すぐ練習開始</a>
+  </div>
+</div>
+
+</body>
+</html>
