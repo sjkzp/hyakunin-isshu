@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>メッセージアプリ</title>
+  <title>LINE風メッセージアプリ</title>
   <style>
     /* ページ背景（LINE風） */
     body {
@@ -13,10 +13,10 @@
       padding: 0;
     }
 
-    /* チャットコンテナ */
+    /* チャットコンテナ（通常表示） */
     #chat-container {
       display: flex;
-      flex-direction: column-reverse;
+      flex-direction: column; /* ← column-reverse をやめる */
       max-height: 350px;
       overflow-y: auto;
       padding: 10px;
@@ -206,7 +206,7 @@
       /* 日付が変わったらラベルを挿入 */
       if (lastDate !== today) {
         const dateLabel = createDateLabel(today);
-        chatContainer.insertBefore(dateLabel, chatContainer.firstChild);
+        chatContainer.appendChild(dateLabel); /* ← 修正 */
         chatContainer.setAttribute("data-last-date", today);
       }
 
@@ -220,7 +220,9 @@
       };
 
       const messageElement = createMessageElement(messageInfo);
-      chatContainer.insertBefore(messageElement, chatContainer.firstChild);
+
+      /* 送信時も末尾に追加（順序が揃う） */
+      chatContainer.appendChild(messageElement);
 
       document.getElementById("message-input").value = "";
 
@@ -250,7 +252,9 @@
 
       let lastDate = null;
 
+      /* 保存されている順のまま「下へ追加」される */
       messages.forEach(messageInfo => {
+
         if (lastDate !== messageInfo.date) {
           const dateLabel = createDateLabel(messageInfo.date);
           chatContainer.appendChild(dateLabel);
