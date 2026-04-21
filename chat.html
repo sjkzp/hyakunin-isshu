@@ -1,259 +1,281 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>メッセージアプリ</title>
-  <style>
-    body {
-      background-color: #F5F8F9;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メッセージアプリ</title>
 
-    #chat-container {
-      display: flex;
-      flex-direction: column;
-      max-height: 350px;
-      overflow-y: auto;
-      padding: 10px;
-    }
+<style>
+body {
+  background-color: #F5F8F9;
+  font-family: sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    .message {
-      position: relative;
-      max-width: 70%;
-      padding: 10px;
-      border-radius: 15px;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-    }
+/* チャット */
+#chat-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
 
-    .right {
-      background-color: #DCF8C6;
-      color: #000;
-      align-self: flex-end;
-    }
+/* 吹き出し */
+.message {
+  position: relative;
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
 
-    .left {
-      background-color: #FFFFFF;
-      color: #000;
-      align-self: flex-start;
-    }
+.right {
+  background-color: #DCF8C6;
+  align-self: flex-end;
+}
 
-    .delete-button {
-      cursor: pointer;
-      color: #888;
-      font-size: 12px;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-    }
+.left {
+  background-color: #FFFFFF;
+  align-self: flex-start;
+}
 
-    .message-info {
-      font-size: 10px;
-      color: #666;
-      margin-bottom: 5px;
-      white-space: pre-line;
-    }
+/* 情報 */
+.message-info {
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 5px;
+  white-space: pre-line;
+}
 
-    /* ← 画像が大きすぎるのを防ぐ */
-    .message img {
-      max-width: 180px;
-      border-radius: 10px;
-      margin-bottom: 5px;
-    }
+/* 画像 */
+.message img {
+  max-width: 180px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
 
-    #form-container {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-    }
+/* 削除 */
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+}
 
-    #speaker, #message-input, button, #image-input {
-      margin-bottom: 10px;
-    }
+/* 日付 */
+.date-label {
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+  margin: 10px 0;
+}
 
-    #message-input {
-      height: 40px;
-      width: 100%;
-    }
+/* フォーム */
+#form-container {
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
 
-    .date-label {
-      text-align: center;
-      color: #888;
-      font-size: 12px;
-      margin: 10px 0;
-    }
+/* 各入力 */
+#speaker {
+  width: auto;
+  padding: 6px;
+  margin-bottom: 8px;
+}
 
-  </style>
+#message-input {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 8px;
+}
+
+#image-input {
+  margin-bottom: 8px;
+}
+
+/* 送信ボタン */
+#send-btn {
+  width: 100px;
+  padding: 8px;
+}
+
+/* モバイル */
+@media screen and (max-width: 600px) {
+  #message-input {
+    height: 80px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <div id="chat-container"></div>
+<div id="chat-container"></div>
 
-  <div id="form-container">
-    <select id="speaker">
-      <option value="right">なずな</option>
-      <option value="left">みゆき</option>
-    </select>
+<div id="form-container">
 
-    <textarea id="message-input" placeholder="メッセージを入力"></textarea>
+  <select id="speaker">
+    <option value="right">なずな</option>
+    <option value="left">みゆき</option>
+  </select>
 
-    <!-- 🔥 画像投稿追加 -->
-    <input type="file" id="image-input" accept="image/*">
+  <textarea id="message-input" placeholder="メッセージを入力"></textarea>
 
-    <button onclick="sendMessage()">送信</button>
-  </div>
+  <input type="file" id="image-input" accept="image/*">
 
-  <script>
-    /* ---------- 時刻 ---------- */
-    function getCurrentTime() {
-      const now = new Date();
-      const h = ('0' + now.getHours()).slice(-2);
-      const m = ('0' + now.getMinutes()).slice(-2);
-      return `${h}:${m}`;
-    }
+  <!-- ✅ ファイル選択の下に配置 -->
+  <button id="send-btn" onclick="sendMessage()">送信</button>
 
-    /* ---------- 日付 ---------- */
-    function getTodayDateString() {
-      const now = new Date();
-      return `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
-    }
+</div>
 
-    function createDateLabel(dateString) {
-      const dateLabel = document.createElement("div");
-      dateLabel.className = "date-label";
-      dateLabel.textContent = dateString;
-      return dateLabel;
-    }
+<script>
+function getCurrentTime() {
+  const now = new Date();
+  const h = ('0' + now.getHours()).slice(-2);
+  const m = ('0' + now.getMinutes()).slice(-2);
+  return `${h}:${m}`;
+}
 
-    /* ---------- メッセージ要素作成 ---------- */
-    function createMessageElement({ speaker, message, time, alignment, id, image }) {
-      const messageElement = document.createElement("div");
-      messageElement.className = "message " + alignment;
-      messageElement.id = id;
+function getTodayDateString() {
+  const now = new Date();
+  return `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
+}
 
-      const info = document.createElement("div");
-      info.className = "message-info";
-      info.textContent = `${speaker}\n${time}`;
-      messageElement.appendChild(info);
+function createDateLabel(date) {
+  const div = document.createElement("div");
+  div.className = "date-label";
+  div.textContent = date;
+  return div;
+}
 
-      /* 🔥 画像があれば表示 */
-      if (image) {
-        const img = document.createElement("img");
-        img.src = image;
-        messageElement.appendChild(img);
-      }
+function createMessageElement({ speaker, message, time, alignment, id, image }) {
+  const el = document.createElement("div");
+  el.className = "message " + alignment;
+  el.id = id;
 
-      /* テキストがあれば表示 */
-      if (message && message.trim() !== "") {
-        const text = document.createElement("div");
-        text.textContent = message;
-        messageElement.appendChild(text);
-      }
+  const info = document.createElement("div");
+  info.className = "message-info";
+  info.textContent = `${speaker}\n${time}`;
+  el.appendChild(info);
 
-      const del = document.createElement("div");
-      del.className = "delete-button";
-      del.textContent = "✕";
-      del.onclick = () => deleteMessage(id);
-      messageElement.appendChild(del);
+  if (image) {
+    const img = document.createElement("img");
+    img.src = image;
+    el.appendChild(img);
+  }
 
-      return messageElement;
-    }
+  if (message.trim() !== "") {
+    const text = document.createElement("div");
+    text.textContent = message;
+    el.appendChild(text);
+  }
 
-    /* ---------- メッセージ送信 ---------- */
-    function sendMessage() {
-      const speakerElement = document.getElementById("speaker");
-      const speaker = speakerElement.options[speakerElement.selectedIndex].text;
-      const message = document.getElementById("message-input").value;
-      const file = document.getElementById("image-input").files[0];
+  const del = document.createElement("div");
+  del.className = "delete-button";
+  del.textContent = "✕";
+  del.onclick = () => deleteMessage(id);
+  el.appendChild(del);
 
-      const alignment = speakerElement.value === "right" ? "right" : "left";
-      const id = Date.now().toString();
-      const today = getTodayDateString();
+  return el;
+}
 
-      const chatContainer = document.getElementById("chat-container");
-      const lastDate = chatContainer.getAttribute("data-last-date");
+function sendMessage() {
+  const sp = document.getElementById("speaker");
+  const speaker = sp.options[sp.selectedIndex].text;
+  const message = document.getElementById("message-input").value;
+  const file = document.getElementById("image-input").files[0];
 
-      /* 日付ラベル挿入 */
-      if (lastDate !== today) {
-        chatContainer.appendChild(createDateLabel(today));
-        chatContainer.setAttribute("data-last-date", today);
-      }
+  const alignment = sp.value === "right" ? "right" : "left";
+  const id = Date.now().toString();
+  const today = getTodayDateString();
 
-      /* テキストも画像も無い場合は送信しない */
-      if (!message.trim() && !file) return;
+  const chat = document.getElementById("chat-container");
+  const lastDate = chat.getAttribute("data-last-date");
 
-      /* 画像を読み込み → base64化 → 保存 */
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          postMessage({
-            id, speaker, message, alignment,
-            image: reader.result,
-            time: getCurrentTime(),
-            date: today,
-          });
-        };
-        reader.readAsDataURL(file);
-      } else {
-        postMessage({
-          id, speaker, message, alignment,
-          image: null,
-          time: getCurrentTime(),
-          date: today,
-        });
-      }
+  if (lastDate !== today) {
+    chat.appendChild(createDateLabel(today));
+    chat.setAttribute("data-last-date", today);
+  }
 
-      document.getElementById("message-input").value = "";
-      document.getElementById("image-input").value = "";
-    }
+  if (!message.trim() && !file) return;
 
-    /* ---------- メッセージ追加＆保存 ---------- */
-    function postMessage(info) {
-      const chatContainer = document.getElementById("chat-container");
-      chatContainer.appendChild(createMessageElement(info));
-      saveToLocal(info);
-    }
-
-    function saveToLocal(info) {
-      const messages = JSON.parse(localStorage.getItem("messages")) || [];
-      messages.push(info);
-      localStorage.setItem("messages", JSON.stringify(messages));
-    }
-
-    /* ---------- 削除 ---------- */
-    function deleteMessage(id) {
-      let messages = JSON.parse(localStorage.getItem("messages")) || [];
-      messages = messages.filter(m => m.id !== id);
-      localStorage.setItem("messages", JSON.stringify(messages));
-
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    }
-
-    /* ---------- ロード ---------- */
-    function loadMessages() {
-      const messages = JSON.parse(localStorage.getItem("messages")) || [];
-      const chatContainer = document.getElementById("chat-container");
-
-      let lastDate = null;
-
-      messages.forEach(info => {
-        if (lastDate !== info.date) {
-          chatContainer.appendChild(createDateLabel(info.date));
-          lastDate = info.date;
-        }
-        chatContainer.appendChild(createMessageElement(info));
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      post({
+        id, speaker, message,
+        alignment,
+        image: reader.result,
+        time: getCurrentTime(),
+        date: today
       });
+    };
+    reader.readAsDataURL(file);
+  } else {
+    post({
+      id, speaker, message,
+      alignment,
+      image: null,
+      time: getCurrentTime(),
+      date: today
+    });
+  }
 
-      chatContainer.setAttribute("data-last-date", lastDate);
+  document.getElementById("message-input").value = "";
+  document.getElementById("image-input").value = "";
+}
+
+function post(data) {
+  const chat = document.getElementById("chat-container");
+  chat.appendChild(createMessageElement(data));
+  save(data);
+}
+
+function save(data) {
+  const arr = JSON.parse(localStorage.getItem("messages")) || [];
+  arr.push(data);
+  localStorage.setItem("messages", JSON.stringify(arr));
+}
+
+function deleteMessage(id) {
+  let arr = JSON.parse(localStorage.getItem("messages")) || [];
+  arr = arr.filter(m => m.id !== id);
+  localStorage.setItem("messages", JSON.stringify(arr));
+
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function loadMessages() {
+  const arr = JSON.parse(localStorage.getItem("messages")) || [];
+  const chat = document.getElementById("chat-container");
+
+  let lastDate = null;
+
+  arr.forEach(m => {
+    if (lastDate !== m.date) {
+      chat.appendChild(createDateLabel(m.date));
+      lastDate = m.date;
     }
+    chat.appendChild(createMessageElement(m));
+  });
 
-    window.onload = loadMessages;
-  </script>
+  chat.setAttribute("data-last-date", lastDate);
+}
+
+window.onload = loadMessages;
+</script>
 
 </body>
 </html>
