@@ -69,6 +69,34 @@ body {
   flex-direction:column;
 }
 
+/* 全体に安全な幅指定を適用 */
+* {
+  box-sizing: border-box;
+}
+
+/* 下部の入力フォーム全体 */
+#form-container {
+  width: 100%;
+  padding: 10px;
+}
+
+/* テキスト入力欄（スマホで100%に収まる） */
+#message-input {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 8px;
+  box-sizing: border-box; /* ←これが重要 */
+}
+
+/* スマホ用調整 */
+@media screen and (max-width:600px) {
+  #message-input {
+    height: 80px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 #speaker { width:120px; margin-bottom:8px; padding:6px; }
 
 #message-input { height:60px; margin-bottom:8px; width:100%; }
