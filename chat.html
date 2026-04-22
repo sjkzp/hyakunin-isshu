@@ -169,9 +169,10 @@ function createMessageElement({ speaker, message, time, alignment, id, image }) 
   info.textContent = `${speaker}\n${time}`;
   el.appendChild(info);
 
+  // 画像がある場合
   if (image) {
     const img = document.createElement("img");
-    img.src = image;
+    img.src = image;  // base64をそのまま読み込む
     el.appendChild(img);
   }
 
@@ -184,12 +185,13 @@ function createMessageElement({ speaker, message, time, alignment, id, image }) 
   const del = document.createElement("div");
   del.className = "delete-button";
   del.textContent = "✕";
-  del.onclick = () => deleteMessage(id);
+  del.onclick = () => deleteMessage(id);  // ←変更なし
   el.appendChild(del);
 
   return el;
 }
 
+/* ここが送信時の処理 */
 function sendMessage() {
   const sp = document.getElementById("speaker");
   const speaker = sp.options[sp.selectedIndex].text;
@@ -216,7 +218,7 @@ function sendMessage() {
       post({
         id, speaker, message,
         alignment,
-        image: reader.result,
+        image: reader.result,  // base64
         time: getCurrentTime(),
         date: today
       });
@@ -236,6 +238,7 @@ function sendMessage() {
   document.getElementById("image-input").value = "";
 }
 
+/* 追加・保存処理 */
 function post(data) {
   const chat = document.getElementById("chat-container");
   chat.appendChild(createMessageElement(data));
@@ -248,7 +251,12 @@ function save(data) {
   localStorage.setItem("messages", JSON.stringify(arr));
 }
 
+/* ✕を押したときの削除処理 */
 function deleteMessage(id) {
+
+  // 🔥 ダイアログ追加
+  if (!confirm("本当に削除しますか？")) return;
+
   let arr = JSON.parse(localStorage.getItem("messages")) || [];
   arr = arr.filter(m => m.id !== id);
   localStorage.setItem("messages", JSON.stringify(arr));
@@ -257,6 +265,7 @@ function deleteMessage(id) {
   if (el) el.remove();
 }
 
+/* ロード処理 */
 function loadMessages() {
   const arr = JSON.parse(localStorage.getItem("messages")) || [];
   const chat = document.getElementById("chat-container");
@@ -268,7 +277,7 @@ function loadMessages() {
       chat.appendChild(createDateLabel(m.date));
       lastDate = m.date;
     }
-    chat.appendChild(createMessageElement(m));
+    chat.appendChild(createMessageElement(m));  // base64画像も自動復元
   });
 
   chat.setAttribute("data-last-date", lastDate);
